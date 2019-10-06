@@ -1,9 +1,10 @@
-package ui.model;
+package model;
 
 public class Item {
+//    public int position;
     public String name;
-    public boolean status = false;
-    public String dueDate = "";
+/*    public boolean status = false;
+    public String dueDate = "";*/
 
     // REQUIRES: Item
     // MODIFIES: Item's name
@@ -17,6 +18,20 @@ public class Item {
     // EFFECTS: Returns the item's name
     public String getName() {
         return name;
+    }
+/*
+    // REQUIRES: Item
+    // MODIFIES: Item's position within the list
+    // EFFECTS: Sets the item's position
+    public void setPosition(Integer p) {
+        position = p;
+    }
+
+    // REQUIRES: Item
+    // MODIFIES: N/A
+    // EFFECTS: Returns the item's position
+    public Integer getPosition() {
+        return position;
     }
 
     // REQUIRES: Item
@@ -45,5 +60,5 @@ public class Item {
     // EFFECTS: Returns the item's due date
     public String getDueDate() {
         return dueDate;
-    }
+    }*/
 }

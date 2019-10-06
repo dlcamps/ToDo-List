@@ -1,8 +1,9 @@
 package ui;
 
-import ui.model.Item;
-import ui.model.ToDoList;
+import model.Item;
+import model.ToDoList;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
@@ -12,20 +13,22 @@ public class Main {
     Scanner scanner = new Scanner(System.in);
     String newLine = System.getProperty("line.separator");
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         new Main();
     }
 
-    public Main() {
+    public Main() throws IOException {
 
         myList = new ToDoList();
+        myList.fileRead();
+
+        System.out.println("[1] Add an Item");
+        System.out.println("[2] Remove an Item");
+        System.out.println("[3] Show All Items");
+        System.out.println("[4] Save the File & Quit the Program" + newLine);
 
         while (true) {
             System.out.println("Select an Option:");
-            System.out.println("[1] Add an Item");
-            System.out.println("[2] Remove an Item");
-            System.out.println("[3] Show All Items");
-            System.out.println("[4] Quit the Program");
             choice = scanner.next();
 
             if (choice.equals("1")) {
@@ -38,6 +41,7 @@ public class Main {
                 option3();
             }
             if (choice.equals("4")) {
+                myList.fileWrite();
                 break;
             }
         }
@@ -51,15 +55,13 @@ public class Main {
         myList.add(newItem);
         System.out.println("Item Added" + newLine);
     }
-
     public void option2() {
-        System.out.println(myList);
-        System.out.println("Type the EXACT Item to Remove: ");
+        myList.showItems(myList);
+        System.out.println("Type the Line Number of the Item to Remove: ");
         scanner.nextLine();
-        myList.remove(newItem);
+        myList.remove(scanner.nextLine());
         System.out.println("Item Removed" + newLine);
     }
-
     public void option3() {
         myList.showItems(myList);
     }
