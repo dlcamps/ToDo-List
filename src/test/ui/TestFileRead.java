@@ -44,6 +44,7 @@ public class TestFileRead {
         itemToCompare = list.get(2);
         assertEquals(itemToCompare.getName(), "ToDo3");
     }
+
 /*    @Test
     public void testFileRead() throws IOException {
         listCounter = 0;

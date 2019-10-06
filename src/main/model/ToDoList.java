@@ -30,6 +30,7 @@ public class ToDoList implements FileRead, FileWrite {
             list.add(itemToImport);
         }
     }
+
     public void fileWrite() throws FileNotFoundException, UnsupportedEncodingException {
         writer = new PrintWriter("ToDoList.txt","UTF-8");
         for (Item i : list) {
@@ -38,6 +39,7 @@ public class ToDoList implements FileRead, FileWrite {
         }
         writer.close();
     }
+
 /*    public static ArrayList<String> splitOnSpace(String line) {
         String[] splits = line.split(" ");
         return new ArrayList<>(Arrays.asList(splits));

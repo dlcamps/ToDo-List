@@ -55,6 +55,7 @@ public class Main {
         myList.add(newItem);
         System.out.println("Item Added" + newLine);
     }
+
     public void option2() {
         myList.showItems(myList);
         System.out.println("Type the Line Number of the Item to Remove: ");
@@ -62,6 +63,7 @@ public class Main {
         myList.remove(scanner.nextLine());
         System.out.println("Item Removed" + newLine);
     }
+
     public void option3() {
         myList.showItems(myList);
     }
