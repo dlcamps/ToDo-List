@@ -1,6 +1,6 @@
 package ui;
 
-import model.Item;
+import model.ItemRegular;
 import model.ToDoList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,17 +15,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestFileRead {
     ToDoList myList;
-    ArrayList<Item> list;
-    Item itemToImport;
+    ArrayList<ItemRegular> list;
+    ItemRegular itemToImport;
     List<String> lines;
-    Item itemToCompare;
+    ItemRegular itemToCompare;
     Integer listCounter;
     Boolean noErrors;
 
     @BeforeEach
     public void setup() {
         myList = new ToDoList();
-        list = new ArrayList<Item>();
+        list = new ArrayList<ItemRegular>();
     }
 
     @Test
@@ -33,7 +33,7 @@ public class TestFileRead {
         lines = Files.readAllLines(Paths.get("ForTestRead.txt"));
         for (String line : lines) {
             //ArrayList<String> partsOfLine = splitOnSpace(line);
-            itemToImport = new Item();
+            itemToImport = new ItemRegular();
             itemToImport.setName(line);
             list.add(itemToImport);
         }

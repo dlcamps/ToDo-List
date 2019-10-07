@@ -1,6 +1,6 @@
 package ui;
 
-import model.Item;
+import model.ItemRegular;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,22 +14,22 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestFileWrite {
-    ArrayList<Item> list;
-    Item i1;
-    Item i2;
-    Item i3;
+    ArrayList<ItemRegular> list;
+    ItemRegular i1;
+    ItemRegular i2;
+    ItemRegular i3;
     PrintWriter writer;
     String nameToExport;
     List<String> lines;
-    Item itemToImport;
-    Item itemToCompare;
+    ItemRegular itemToImport;
+    ItemRegular itemToCompare;
 
     @BeforeEach
     public void setup() {
-        list = new ArrayList<Item>();
-        i1 = new Item();
-        i2 = new Item();
-        i3 = new Item();
+        list = new ArrayList<ItemRegular>();
+        i1 = new ItemRegular();
+        i2 = new ItemRegular();
+        i3 = new ItemRegular();
         i1.setName("ToDo1");
         i2.setName("ToDo2");
         i3.setName("ToDo3");
@@ -41,7 +41,7 @@ public class TestFileWrite {
     @Test
     public void testFileWrite() throws IOException {
         writer = new PrintWriter("ForTestWrite.txt","UTF-8");
-        for (Item i : list) {
+        for (ItemRegular i : list) {
             nameToExport = i.getName();
             writer.println(nameToExport);
         }
@@ -49,7 +49,7 @@ public class TestFileWrite {
         lines = Files.readAllLines(Paths.get("ForTestWrite.txt"));
         for (String line : lines) {
             //ArrayList<String> partsOfLine = splitOnSpace(line);
-            itemToImport = new Item();
+            itemToImport = new ItemRegular();
             itemToImport.setName(line);
             list.add(itemToImport);
         }

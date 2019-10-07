@@ -7,16 +7,17 @@ import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ToDoList implements FileRead, FileWrite {
-    ArrayList<Item> list = new ArrayList<Item>();
+    ArrayList<ItemRegular> listRegular = new ArrayList<ItemRegular>();
+    ArrayList<ItemUrgent> listUrgent = new ArrayList<ItemUrgent>();
     String newLine = System.getProperty("line.separator");
     Integer itemLine;
-    Item itemToBeRemoved;
+    ItemRegular itemToBeRemovedRegular;
+    ItemUrgent itemToBeRemovedUrgent;
     Integer itemListPosition;
-    Item itemToImport;
+    ItemRegular itemToImport;
     String nameToExport;
     List<String> lines;
     PrintWriter writer;
@@ -25,15 +26,15 @@ public class ToDoList implements FileRead, FileWrite {
         lines = Files.readAllLines(Paths.get("ToDoList.txt"));
         for (String line : lines) {
             //ArrayList<String> partsOfLine = splitOnSpace(line);
-            itemToImport = new Item();
+            itemToImport = new ItemRegular();
             itemToImport.setName(line);
-            list.add(itemToImport);
+            listRegular.add(itemToImport);
         }
     }
 
     public void fileWrite() throws FileNotFoundException, UnsupportedEncodingException {
         writer = new PrintWriter("ToDoList.txt","UTF-8");
-        for (Item i : list) {
+        for (ItemRegular i : listRegular) {
             nameToExport = i.getName();
             writer.println(nameToExport);
         }
@@ -45,20 +46,30 @@ public class ToDoList implements FileRead, FileWrite {
         return new ArrayList<>(Arrays.asList(splits));
     }*/
 
-    public void add(Item i) {
-        list.add(i);
+    public void addRegular(ItemRegular i) {
+        listRegular.add(i);
     }
 
-    public void remove(String s) {
+    public void addUrgent(ItemUrgent i) {
+        listUrgent.add(i);
+    }
+
+    public void removeRegular(String s) {
         itemListPosition = Integer.parseInt(s);
-        itemToBeRemoved = list.get(itemListPosition - 1);
-        list.remove(itemToBeRemoved);
+        itemToBeRemovedRegular = listRegular.get(itemListPosition - 1);
+        listRegular.remove(itemToBeRemovedRegular);
+    }
+
+    public void removeUrgent(String s) {
+        itemListPosition = Integer.parseInt(s);
+        itemToBeRemovedUrgent = listUrgent.get(itemListPosition - 1);
+        listRegular.remove(itemToBeRemovedUrgent);
     }
 
     public void showItems(ToDoList tdl) {
         itemLine = 1;
         System.out.println(newLine + "[TO-DO]");
-        for (Item i: list) {
+        for (ItemRegular i: listRegular) {
             System.out.println("(" + itemLine + ")" + " " + i.getName());
             itemLine++;
         }

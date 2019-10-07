@@ -2,8 +2,7 @@ package ui;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import model.Item;
-import model.ToDoList;
+import model.ItemRegular;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -12,13 +11,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 
 public class TestToDoList {
-    private ArrayList<Item> list;
-    private Item i;
+    private ArrayList<ItemRegular> list;
+    private ItemRegular i;
 
     @BeforeEach
     public void setup() {
-        list = new ArrayList<Item>();
-        i = new Item();
+        list = new ArrayList<ItemRegular>();
+        i = new ItemRegular();
     }
     @Test
     public void addTest() {

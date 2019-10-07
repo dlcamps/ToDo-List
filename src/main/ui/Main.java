@@ -1,6 +1,7 @@
 package ui;
 
-import model.Item;
+import model.ItemRegular;
+import model.ItemUrgent;
 import model.ToDoList;
 
 import java.io.IOException;
@@ -8,7 +9,8 @@ import java.util.Scanner;
 
 public class Main {
     ToDoList myList;
-    Item newItem;
+    ItemRegular newItemR;
+    ItemUrgent newItemU;
     String choice;
     Scanner scanner = new Scanner(System.in);
     String newLine = System.getProperty("line.separator");
@@ -48,11 +50,20 @@ public class Main {
     }
 
     public void option1() {
-        System.out.println("Enter the Item Text: ");
-        newItem = new Item();
+        System.out.println("Is it Urgent? (y/n)");
         scanner.nextLine();
-        newItem.setName(scanner.nextLine());
-        myList.add(newItem);
+        if (scanner.nextLine() == "y") {
+            System.out.println("Enter the URGENT Item Text: ");
+            newItemU = new ItemUrgent();
+            scanner.nextLine();
+            newItemU.setName(scanner.nextLine());
+            myList.addUrgent(newItemU);
+        }
+        System.out.println("Enter the Item Text: ");
+        newItemR = new ItemRegular();
+        scanner.nextLine();
+        newItemR.setName(scanner.nextLine());
+        myList.addRegular(newItemR);
         System.out.println("Item Added" + newLine);
     }
 
@@ -60,7 +71,7 @@ public class Main {
         myList.showItems(myList);
         System.out.println("Type the Line Number of the Item to Remove: ");
         scanner.nextLine();
-        myList.remove(scanner.nextLine());
+        myList.removeRegular(scanner.nextLine());
         System.out.println("Item Removed" + newLine);
     }
 

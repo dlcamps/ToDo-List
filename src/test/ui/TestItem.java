@@ -1,17 +1,18 @@
 package ui;
 
+import model.Item;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import model.Item;
+import model.ItemRegular;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TestItem {
-    private Item i;
+public class TestItem extends Item {
+    private ItemRegular i;
 
     @BeforeEach
     public void setup() {
-        i = new Item();
+        i = new ItemRegular();
     }
     @Test
     public void setNameTest() {
