@@ -1,5 +1,6 @@
 package ui;
 
+import model.Item;
 import model.ItemRegular;
 import model.ItemUrgent;
 import model.ToDoList;
@@ -9,11 +10,13 @@ import java.util.Scanner;
 
 public class Main {
     ToDoList myList;
-    ItemRegular newItemR;
-    ItemUrgent newItemU;
+    Item newItem;
+    String itemType;
     String choice;
     Scanner scanner = new Scanner(System.in);
     String newLine = System.getProperty("line.separator");
+    String fileNameToRead = "ToDoList";
+    String fileNameToWrite = "ToDoList";
 
     public static void main(String[] args) throws IOException {
         new Main();
@@ -22,7 +25,7 @@ public class Main {
     public Main() throws IOException {
 
         myList = new ToDoList();
-        myList.fileRead();
+        myList.fileRead(fileNameToRead);
 
         System.out.println("[1] Add an Item");
         System.out.println("[2] Remove an Item");
@@ -43,27 +46,27 @@ public class Main {
                 option3();
             }
             if (choice.equals("4")) {
-                myList.fileWrite();
+                myList.fileWrite(fileNameToWrite);
                 break;
             }
         }
     }
 
     public void option1() {
-        System.out.println("Is it Urgent? (y/n)");
+        System.out.println("Select Item Type: [1] Regular Item, [2] Urgent Item");
         scanner.nextLine();
-        if (scanner.nextLine() == "y") {
-            System.out.println("Enter the URGENT Item Text: ");
-            newItemU = new ItemUrgent();
-            scanner.nextLine();
-            newItemU.setName(scanner.nextLine());
-            myList.addUrgent(newItemU);
+        itemType = scanner.nextLine();
+        if (itemType.equals("1")) {                 // Regular
+            System.out.println("Enter the Item Text: ");
+            newItem = new ItemRegular();
+            newItem.setName(scanner.nextLine());
+            myList.add(newItem);
+        } else if (itemType.equals("2")) {          // Urgent
+            System.out.println("Enter the !URGENT! Item Text: ");
+            newItem = new ItemUrgent();
+            newItem.setName(scanner.nextLine());
+            myList.add(newItem);
         }
-        System.out.println("Enter the Item Text: ");
-        newItemR = new ItemRegular();
-        scanner.nextLine();
-        newItemR.setName(scanner.nextLine());
-        myList.addRegular(newItemR);
         System.out.println("Item Added" + newLine);
     }
 
@@ -71,7 +74,7 @@ public class Main {
         myList.showItems(myList);
         System.out.println("Type the Line Number of the Item to Remove: ");
         scanner.nextLine();
-        myList.removeRegular(scanner.nextLine());
+        myList.remove(scanner.nextLine());
         System.out.println("Item Removed" + newLine);
     }
 

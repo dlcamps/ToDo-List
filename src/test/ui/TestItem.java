@@ -1,6 +1,7 @@
 package ui;
 
 import model.Item;
+import model.ItemUrgent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import model.ItemRegular;
@@ -8,20 +9,26 @@ import model.ItemRegular;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestItem extends Item {
-    private ItemRegular i;
+    private ItemRegular iR;
+    private ItemUrgent iU;
 
     @BeforeEach
     public void setup() {
-        i = new ItemRegular();
+        iR = new ItemRegular();
+        iU = new ItemUrgent();
     }
     @Test
     public void setNameTest() {
-        i.setName("Task");
-        assertTrue(i.name == "Task");
+        iR.setName("Regular Task");
+        assertTrue(iR.name.equals("Regular Task"));
+        iU.setName("Urgent Task");
+        assertTrue(iU.name.equals("[!!!] Urgent Task"));
     }
     @Test
     public void getNameTest() {
-        i.setName("Task");
-        assertTrue(i.getName() == "Task");
+        iR.setName("Regular Task");
+        assertTrue(iR.getName().equals("Regular Task"));
+        iU.setName(("Urgent Task"));
+        assertTrue(iU.getName().equals("[!!!] Urgent Task"));
     }
 }

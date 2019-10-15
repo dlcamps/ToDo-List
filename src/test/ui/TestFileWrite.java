@@ -1,33 +1,30 @@
 package ui;
 
+import model.Item;
 import model.ItemRegular;
+import model.ItemUrgent;
+import model.ToDoList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestFileWrite {
-    ArrayList<ItemRegular> list;
-    ItemRegular i1;
+    ToDoList myList;
+    ArrayList<Item> list;
+    ItemUrgent i1;
     ItemRegular i2;
     ItemRegular i3;
-    PrintWriter writer;
-    String nameToExport;
-    List<String> lines;
-    ItemRegular itemToImport;
-    ItemRegular itemToCompare;
+    Item itemToCompare;
 
     @BeforeEach
     public void setup() {
-        list = new ArrayList<ItemRegular>();
-        i1 = new ItemRegular();
+        myList = new ToDoList();
+        list = new ArrayList<Item>();
+        i1 = new ItemUrgent();
         i2 = new ItemRegular();
         i3 = new ItemRegular();
         i1.setName("ToDo1");
@@ -40,21 +37,10 @@ public class TestFileWrite {
 
     @Test
     public void testFileWrite() throws IOException {
-        writer = new PrintWriter("ForTestWrite.txt","UTF-8");
-        for (ItemRegular i : list) {
-            nameToExport = i.getName();
-            writer.println(nameToExport);
-        }
-        writer.close();
-        lines = Files.readAllLines(Paths.get("ForTestWrite.txt"));
-        for (String line : lines) {
-            //ArrayList<String> partsOfLine = splitOnSpace(line);
-            itemToImport = new ItemRegular();
-            itemToImport.setName(line);
-            list.add(itemToImport);
-        }
+        myList.fileWrite("ForTestWrite");
+        myList.fileRead("ForTestWrite");
         itemToCompare = list.get(0);
-        assertEquals(itemToCompare.getName(), "ToDo1");
+        assertEquals(itemToCompare.getName(), "[!!!] ToDo1");
         itemToCompare = list.get(1);
         assertEquals(itemToCompare.getName(), "ToDo2");
         itemToCompare = list.get(2);
