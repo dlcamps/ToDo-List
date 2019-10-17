@@ -25,12 +25,25 @@ public class TestRemoveOnEmptyListException {
         myList.add(item);
         try {
             //option2();
+            if (myList.isEmpty()) {
+                throw new RemoveOnEmptyListException();
+            } else if (!myList.isEmpty()) {
+                // Success
+            }
         } catch (RemoveOnEmptyListException e) {
             fail("ERROR: Caught RemoveOnEmptyListException");
         }
-        myList.remove(item.getName());
+    }
+
+    @Test
+    public void testRemoveOnEmptyList() {
         try {
             //option2();
+            if (myList.isEmpty()) {
+                throw new RemoveOnEmptyListException();
+            } else if (!myList.isEmpty()) {
+                myList.remove(item.getName());
+            }
         } catch (RemoveOnEmptyListException e) {
             // Success
         }
