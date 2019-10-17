@@ -1,4 +1,4 @@
-package ui;
+package model;
 
 import model.Item;
 import model.ItemUrgent;

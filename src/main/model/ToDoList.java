@@ -51,6 +51,10 @@ public class ToDoList implements FileRead, FileWrite {
         return list.get(i);
     }
 
+    public boolean isEmpty() {
+        return list.isEmpty();
+    }
+
     public void add(Item i) {
         list.add(i);
     }

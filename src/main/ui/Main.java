@@ -4,6 +4,7 @@ import model.Item;
 import model.ItemRegular;
 import model.ItemUrgent;
 import model.ToDoList;
+import model.exceptions.RemoveOnEmptyListException;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -18,11 +19,11 @@ public class Main {
     String fileNameToRead = "ToDoList";
     String fileNameToWrite = "ToDoList";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, RemoveOnEmptyListException {
         new Main();
     }
 
-    public Main() throws IOException {
+    public Main() throws IOException, RemoveOnEmptyListException {
 
         myList = new ToDoList();
         myList.fileRead(fileNameToRead);
@@ -40,6 +41,13 @@ public class Main {
                 option1();
             }
             if (choice.equals("2")) {
+                /*try {
+                    option2();
+                } catch (RemoveOnEmptyListException e) {
+                    continue;
+                } finally {
+                    continue;
+                }*/
                 option2();
             }
             if (choice.equals("3")) {
@@ -62,7 +70,7 @@ public class Main {
             newItem.setName(scanner.nextLine());
             myList.add(newItem);
         } else if (itemType.equals("2")) {          // Urgent
-            System.out.println("Enter the !URGENT! Item Text: ");
+            System.out.println("Enter the URGENT Item Text: ");
             newItem = new ItemUrgent();
             newItem.setName(scanner.nextLine());
             myList.add(newItem);
@@ -70,12 +78,22 @@ public class Main {
         System.out.println("Item Added" + newLine);
     }
 
-    public void option2() {
-        myList.showItems(myList);
-        System.out.println("Type the Line Number of the Item to Remove: ");
-        scanner.nextLine();
-        myList.remove(scanner.nextLine());
-        System.out.println("Item Removed" + newLine);
+    public void option2() throws RemoveOnEmptyListException {
+        try {
+            if (myList.isEmpty()) {
+                throw new RemoveOnEmptyListException();
+            } else if (!myList.isEmpty()) {
+                myList.showItems(myList);
+                System.out.println("Type the Line Number of the Item to Remove: ");
+                scanner.nextLine();
+                myList.remove(scanner.nextLine());
+                System.out.println("Item Removed" + newLine);
+            }
+        }  catch (RemoveOnEmptyListException e) {
+            return;
+        } finally {
+            return;
+        }
     }
 
     public void option3() {
