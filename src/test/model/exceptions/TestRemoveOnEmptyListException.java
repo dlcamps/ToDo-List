@@ -24,7 +24,6 @@ public class TestRemoveOnEmptyListException {
     public void testRemoveOnNotEmptyList() {
         myList.add(item);
         try {
-            //option2();
             if (myList.isEmpty()) {
                 throw new RemoveOnEmptyListException();
             } else if (!myList.isEmpty()) {
@@ -38,7 +37,6 @@ public class TestRemoveOnEmptyListException {
     @Test
     public void testRemoveOnEmptyList() {
         try {
-            //option2();
             if (myList.isEmpty()) {
                 throw new RemoveOnEmptyListException();
             } else if (!myList.isEmpty()) {
