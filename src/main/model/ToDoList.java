@@ -7,7 +7,9 @@ import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ToDoList implements FileRead, FileWrite {
 
@@ -20,6 +22,7 @@ public class ToDoList implements FileRead, FileWrite {
     String nameToExport;
     List<String> lines;
     PrintWriter writer;
+    Map<String, Integer> itemLocations = new HashMap<>();
 
     // fileRead() version with specified file to read
     public void fileRead(String fileNameToRead) throws IOException {
@@ -30,9 +33,11 @@ public class ToDoList implements FileRead, FileWrite {
             } else if ((line.length() >= 5) && (line.substring(0, 5).equals("[!!!]"))) {
                 itemToImport = new ItemUrgent();
                 itemToImport.setName(line.substring(6));
+                itemLocations.put(itemToImport.getName().substring(6), 2);
             } else {
                 itemToImport = new ItemRegular();
                 itemToImport.setName(line);
+                itemLocations.put(itemToImport.getName(), 1);
             }
             list.add(itemToImport);
         }
@@ -57,20 +62,36 @@ public class ToDoList implements FileRead, FileWrite {
 
     public void add(Item i) {
         list.add(i);
+        if (i instanceof ItemRegular) {
+            itemLocations.put(i.getName(), 1);
+        } else if (i instanceof ItemUrgent) {
+            itemLocations.put(i.getName().substring(6), 2);
+        }
     }
 
     public void remove(String s) {
         itemListPosition = Integer.parseInt(s);
         itemToBeRemoved = list.get(itemListPosition - 1);
         list.remove(itemToBeRemoved);
+        itemLocations.remove(s, itemLocations.get(s));
     }
 
     public void showItems(ToDoList tdl) {
         itemLine = 1;
-        System.out.println(newLine + "[TO-DO]");
+        System.out.println(newLine + "—————[TO-DO]—————");
         for (Item i: list) {
             System.out.println("(" + itemLine + ")" + " " + i.getName());
             itemLine++;
+        }
+        System.out.println(newLine);
+    }
+
+    public void showUrgentItems(ToDoList tdl) {
+        System.out.println("—————[URGENT]—————");
+        for (String s : itemLocations.keySet()) {
+            if (itemLocations.get(s) == 2) {
+                System.out.println("- " + s);
+            }
         }
         System.out.println(newLine);
     }

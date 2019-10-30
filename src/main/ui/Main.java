@@ -31,7 +31,8 @@ public class Main {
         System.out.println("[1] Add an Item");
         System.out.println("[2] Remove an Item");
         System.out.println("[3] Show All Items");
-        System.out.println("[4] Save the File & Quit the Program" + newLine);
+        System.out.println("[4] Save the File & Quit the Program");
+        System.out.println("[5] Show All URGENT Items" + newLine);
 
         while (true) {
             System.out.println("Select an Option:");
@@ -41,13 +42,6 @@ public class Main {
                 option1();
             }
             if (choice.equals("2")) {
-                /*try {
-                    option2();
-                } catch (RemoveOnEmptyListException e) {
-                    continue;
-                } finally {
-                    continue;
-                }*/
                 option2();
             }
             if (choice.equals("3")) {
@@ -56,6 +50,9 @@ public class Main {
             if (choice.equals("4")) {
                 myList.fileWrite(fileNameToWrite);
                 break;
+            }
+            if (choice.equals("5")) {
+                option5();
             }
         }
     }
@@ -89,7 +86,7 @@ public class Main {
                 myList.remove(scanner.nextLine());
                 System.out.println("Item Removed" + newLine);
             }
-        }  catch (RemoveOnEmptyListException e) {
+        } catch (RemoveOnEmptyListException e) {
             return;
         } finally {
             return;
@@ -98,5 +95,9 @@ public class Main {
 
     public void option3() {
         myList.showItems(myList);
+    }
+
+    public void option5() {
+        myList.showUrgentItems(myList);
     }
 }

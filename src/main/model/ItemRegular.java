@@ -1,6 +1,7 @@
 package model;
 
 public class ItemRegular extends Item {
+
 //    public int position;
     //public String name;
 /*    public boolean status = false;
