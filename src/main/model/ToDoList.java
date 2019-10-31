@@ -22,7 +22,7 @@ public class ToDoList implements FileRead, FileWrite {
     String nameToExport;
     List<String> lines;
     PrintWriter writer;
-    Map<String, Integer> itemLocations = new HashMap<>();
+    Map<String, Integer> itemLocations = new HashMap<>(); // 1 = Regular, 2 = Urgent
 
     // fileRead() version with specified file to read
     public void fileRead(String fileNameToRead) throws IOException {

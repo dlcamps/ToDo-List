@@ -30,6 +30,8 @@ public class TestFileRead {
         assertEquals(itemToCompare.getName(), "ToDo2");
         itemToCompare = myList.getItem(2);
         assertEquals(itemToCompare.getName(), "ToDo3");
+        itemToCompare = myList.getItem(3);
+        assertEquals(itemToCompare.getName(), "ToDo4");
     }
 
 /*    @Test
