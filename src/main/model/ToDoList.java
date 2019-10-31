@@ -73,7 +73,7 @@ public class ToDoList implements FileRead, FileWrite {
         itemListPosition = Integer.parseInt(s);
         itemToBeRemoved = list.get(itemListPosition - 1);
         list.remove(itemToBeRemoved);
-        itemLocations.remove(s, itemLocations.get(s));
+        itemLocations.remove(itemToBeRemoved.getName().substring(6));
     }
 
     public void showItems(ToDoList tdl) {
