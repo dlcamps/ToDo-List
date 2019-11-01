@@ -49,6 +49,7 @@ public class Main {
             }
             if (choice.equals("4")) {
                 myList.fileWrite(fileNameToWrite);
+                System.out.println("*** Saved ***");
                 break;
             }
             if (choice.equals("5")) {
@@ -72,7 +73,7 @@ public class Main {
             newItem.setName(scanner.nextLine());
             myList.add(newItem);
         }
-        System.out.println("Item Added" + newLine);
+        System.out.println("*** Item Added ***" + newLine);
     }
 
     public void option2() throws RemoveOnEmptyListException {
@@ -84,7 +85,7 @@ public class Main {
                 System.out.println("Type the Line Number of the Item to Remove: ");
                 scanner.nextLine();
                 myList.remove(scanner.nextLine());
-                System.out.println("Item Removed" + newLine);
+                System.out.println("*** Item Removed ***" + newLine);
             }
         } catch (RemoveOnEmptyListException e) {
             return;

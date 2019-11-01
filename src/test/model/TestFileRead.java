@@ -33,23 +33,4 @@ public class TestFileRead {
         itemToCompare = myList.getItem(3);
         assertEquals(itemToCompare.getName(), "ToDo4");
     }
-
-/*    @Test
-    public void testFileRead() throws IOException {
-        listCounter = 0;
-        lines = Files.readAllLines(Paths.get("ToDoList.txt"));
-        for (String line : lines) {
-            itemToImport = new Item();
-            itemToImport.setName(line);
-            list.add(itemToImport);
-            for (Item i : list) {
-                if (i.getName() == lines.get(listCounter)) {
-                    noErrors = true;
-                    listCounter++;
-                }
-                noErrors = false;
-            }
-        }
-        assertTrue(noErrors);
-    }*/
 }

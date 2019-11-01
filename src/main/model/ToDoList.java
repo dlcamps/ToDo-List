@@ -24,7 +24,6 @@ public class ToDoList implements FileRead, FileWrite {
     PrintWriter writer;
     Map<String, Integer> itemLocations = new HashMap<>(); // 1 = Regular, 2 = Urgent
 
-    // fileRead() version with specified file to read
     public void fileRead(String fileNameToRead) throws IOException {
         lines = Files.readAllLines(Paths.get("data/" + fileNameToRead + ".txt"));
         for (String line : lines) {
