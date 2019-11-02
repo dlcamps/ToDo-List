@@ -3,10 +3,8 @@ package model.exceptions;
 import model.Item;
 import model.ItemRegular;
 import model.ToDoList;
-import model.exceptions.RemoveOnEmptyListException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ui.Main;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,7 +38,7 @@ public class TestRemoveOnEmptyListException {
             if (myList.isEmpty()) {
                 throw new RemoveOnEmptyListException();
             } else if (!myList.isEmpty()) {
-                myList.remove(item.getName());
+                myList.removeWithString(item.getName());
             }
         } catch (RemoveOnEmptyListException e) {
             // Success

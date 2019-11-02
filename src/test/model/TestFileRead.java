@@ -11,10 +11,8 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestFileRead {
-    ToDoList myList;
-    Item itemToCompare;
-    Integer listCounter;
-    Boolean noErrors;
+    private ToDoList myList;
+    private Item itemToCompare;
 
     @BeforeEach
     public void setup() {

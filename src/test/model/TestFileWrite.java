@@ -13,12 +13,11 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestFileWrite {
-    ToDoList myList;
-//    ArrayList<Item> list;
-    ItemUrgent i1;
-    ItemRegular i2;
-    ItemRegular i3;
-    Item itemToCompare;
+    private ToDoList myList;
+    private ItemUrgent i1;
+    private ItemRegular i2;
+    private ItemRegular i3;
+    private Item itemToCompare;
 
     @BeforeEach
     public void setup() {

@@ -7,19 +7,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TestToDoList {
-    private ArrayList<Item> list;
+    private ToDoList myList;
     private ItemRegular itemRegular;
     private ItemUrgent itemUrgent;
     private Map<String, Integer> itemLocations;
 
     @BeforeEach
     public void setup() {
-        list = new ArrayList<Item>();
+        myList = new ToDoList();
         itemLocations = new HashMap<>();
         itemRegular = new ItemRegular();
         itemRegular.setName("Regular Item 1");
@@ -28,38 +27,38 @@ public class TestToDoList {
     }
     @Test
     public void addTest() {
-        assertFalse(list.contains(itemRegular));
+        assertFalse(myList.contains(itemRegular));
         assertFalse(itemLocations.containsKey(itemRegular.getName()));
-        list.add(itemRegular);
+        myList.add(itemRegular);
         itemLocations.put(itemRegular.getName(), 1);
-        assertTrue(list.contains(itemRegular));
+        assertTrue(myList.contains(itemRegular));
         assertTrue(itemLocations.containsKey(itemRegular.getName()));
 
-        assertFalse(list.contains(itemUrgent));
+        assertFalse(myList.contains(itemUrgent));
         assertFalse(itemLocations.containsKey(itemUrgent.getName().substring(6)));
-        list.add(itemUrgent);
+        myList.add(itemUrgent);
         itemLocations.put(itemUrgent.getName().substring(6), 1);
-        assertTrue(list.contains(itemUrgent));
+        assertTrue(myList.contains(itemUrgent));
         assertTrue(itemLocations.containsKey(itemUrgent.getName().substring(6)));
     }
     @Test
     public void removeTest() {
-        list.add(itemRegular);
+        myList.add(itemRegular);
         itemLocations.put(itemRegular.getName(), 1);
-        assertTrue(list.contains(itemRegular));
+        assertTrue(myList.contains(itemRegular));
         assertTrue(itemLocations.containsKey(itemRegular.getName()));
-        list.remove(itemRegular);
+        myList.removeWithItem(itemRegular);
         itemLocations.remove(itemRegular.getName());
-        assertFalse(list.contains(itemRegular));
+        assertFalse(myList.contains(itemRegular));
         assertFalse(itemLocations.containsKey(itemRegular.getName()));
 
-        list.add(itemUrgent);
+        myList.add(itemUrgent);
         itemLocations.put(itemUrgent.getName().substring(6), 2);
-        assertTrue(list.contains(itemUrgent));
+        assertTrue(myList.contains(itemUrgent));
         assertTrue(itemLocations.containsKey(itemUrgent.getName().substring(6)));
-        list.remove(itemUrgent);
+        myList.removeWithItem(itemUrgent);
         itemLocations.remove(itemUrgent.getName().substring(6));
-        assertFalse(list.contains(itemUrgent));
+        assertFalse(myList.contains(itemUrgent));
         assertFalse(itemLocations.containsKey(itemUrgent.getName().substring(6)));
     }
 }

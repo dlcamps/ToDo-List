@@ -32,7 +32,7 @@ public class ToDoList implements FileRead, FileWrite {
             } else if ((line.length() >= 5) && (line.substring(0, 5).equals("[!!!]"))) {
                 itemToImport = new ItemUrgent();
                 itemToImport.setName(line.substring(6));
-                itemLocations.put(itemToImport.getName().substring(6), 2);
+                itemLocations.put(itemToImport.removeUrgentTag(itemToImport), 2);
             } else {
                 itemToImport = new ItemRegular();
                 itemToImport.setName(line);
@@ -51,6 +51,12 @@ public class ToDoList implements FileRead, FileWrite {
         writer.close();
     }
 
+    // For testing
+    public boolean contains(Item i) {
+        return list.contains(i);
+    }
+
+    // For testing
     public Item getItem(int i) {
         return list.get(i);
     }
@@ -64,15 +70,29 @@ public class ToDoList implements FileRead, FileWrite {
         if (i instanceof ItemRegular) {
             itemLocations.put(i.getName(), 1);
         } else if (i instanceof ItemUrgent) {
-            itemLocations.put(i.getName().substring(6), 2);
+            itemLocations.put(i.removeUrgentTag(i), 2);
         }
     }
 
-    public void remove(String s) {
+    public void removeWithString(String s) {
         itemListPosition = Integer.parseInt(s);
         itemToBeRemoved = list.get(itemListPosition - 1);
         list.remove(itemToBeRemoved);
-        itemLocations.remove(itemToBeRemoved.getName().substring(6));
+        if (itemToBeRemoved.isUrgentFromString(itemToBeRemoved)) {
+            itemLocations.remove(itemToBeRemoved.removeUrgentTag(itemToBeRemoved));
+        } else {
+            itemLocations.remove(itemToBeRemoved.getName());
+        }
+    }
+
+    // For testing
+    public void removeWithItem(Item i) {
+        list.remove(i);
+        if (i.isUrgentFromString(i)) {
+            itemLocations.remove(i.removeUrgentTag(i));
+        } else {
+            itemLocations.remove(i.getName());
+        }
     }
 
     public void showItems(ToDoList tdl) {

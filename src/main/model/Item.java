@@ -16,4 +16,13 @@ public abstract class Item {
     public String getName() {
         return name;
     }
+
+    public boolean isUrgentFromString(Item i) {
+        String s = i.getName();
+        return (s.length() >= 5 && (s.substring(0, 5).equals("[!!!]")));
+    }
+
+    public String removeUrgentTag(Item i) {
+        return i.getName().substring(6);
+    }
 }

@@ -84,7 +84,7 @@ public class Main {
                 myList.showItems(myList);
                 System.out.println("Type the Line Number of the Item to Remove: ");
                 scanner.nextLine();
-                myList.remove(scanner.nextLine());
+                myList.removeWithString(scanner.nextLine());
                 System.out.println("*** Item Removed ***" + newLine);
             }
         } catch (RemoveOnEmptyListException e) {
