@@ -44,6 +44,20 @@ public class TestToDoList {
         assertTrue(itemLocations.containsKey(iU.removeUrgentTag(iU)));
     }
     @Test
+    public void testRemoveWithString() {
+        myList.add(iR);
+        myList.add(iU);
+        myList.removeWithString("1");
+        assertFalse(myList.contains(iR));
+        assertTrue(myList.contains(iU));
+        myList.removeWithString("1");
+        assertFalse(myList.contains(iU));
+        myList.add(iR);
+        myList.add(iU);
+        myList.removeWithString("2");
+        assertFalse(myList.contains(iU));
+    }
+    @Test
     public void testRemoveWithItem() {
         myList.add(iR);
         itemLocations.put(iR.getName(), 1);
