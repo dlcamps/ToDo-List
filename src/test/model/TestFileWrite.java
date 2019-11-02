@@ -32,7 +32,6 @@ public class TestFileWrite {
         myList.add(i2);
         myList.add(i3);
     }
-
     @Test
     public void testFileWrite() throws IOException {
         myList.fileWrite("ForTestWrite");

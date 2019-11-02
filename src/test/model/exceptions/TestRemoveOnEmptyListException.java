@@ -17,7 +17,6 @@ public class TestRemoveOnEmptyListException {
         myList = new ToDoList();
         item = new ItemRegular();
     }
-
     @Test
     public void testRemoveOnNotEmptyList() {
         myList.add(item);
@@ -31,7 +30,6 @@ public class TestRemoveOnEmptyListException {
             fail("ERROR: Caught RemoveOnEmptyListException");
         }
     }
-
     @Test
     public void testRemoveOnEmptyList() {
         try {
