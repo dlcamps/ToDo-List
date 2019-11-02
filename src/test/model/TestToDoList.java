@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,15 +14,35 @@ public class TestToDoList {
     private ItemRegular iR; // Regular Item
     private ItemUrgent iU; // Urgent Item
     private Map<String, Integer> itemLocations;
+    private ArrayList<Item> testList;
+    private Map<String, Integer> testMap;
 
     @BeforeEach
     public void setup() {
         myList = new ToDoList();
+        testList = new ArrayList<Item>();
         itemLocations = new HashMap<>();
+        testMap = new HashMap<>();
+
         iR = new ItemRegular();
-        iR.setName("Regular Item 1");
+        iR.setName("Regular Item");
         iU = new ItemUrgent();
-        iU.setName("Urgent Item 1");
+        iU.setName("Urgent Item");
+    }
+    @Test
+    public void testGetList() {
+        myList.add(iR);
+        testList = myList.getList();
+        assertTrue(testList.contains(iR));
+    }
+    @Test
+    public void testGetMap() {
+        myList.add(iR);
+        itemLocations.put(iR.getName(), 1);
+        assertTrue(myList.contains(iR));
+        assertTrue(itemLocations.containsKey(iR.getName()));
+        testMap = myList.getMap();
+        assertTrue(testMap.containsKey("Regular Item"));
     }
     @Test
     public void testAdd() {
