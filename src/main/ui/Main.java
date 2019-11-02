@@ -7,10 +7,15 @@ import model.ToDoList;
 import model.exceptions.RemoveOnEmptyListException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
     ToDoList myList;
+    Integer itemLine;
+    ArrayList<Item> printList;
+    Map<String, Integer> printMap;
     Item newItem;
     String itemType;
     String choice;
@@ -81,7 +86,7 @@ public class Main {
             if (myList.isEmpty()) {
                 throw new RemoveOnEmptyListException();
             } else if (!myList.isEmpty()) {
-                myList.showItems(myList);
+                option3();
                 System.out.println("Type the Line Number of the Item to Remove: ");
                 scanner.nextLine();
                 myList.removeWithString(scanner.nextLine());
@@ -95,10 +100,29 @@ public class Main {
     }
 
     public void option3() {
-        myList.showItems(myList);
+        // myList.showItems(myList);
+        itemLine = 1;
+        printList = new ArrayList<>();
+        printList = myList.getList();
+
+        System.out.println(newLine + "—————[TO-DO]—————");
+        for (Item i: printList) {
+            System.out.println("(" + itemLine + ")" + " " + i.getName());
+            itemLine++;
+        }
+        System.out.println(newLine);
     }
 
     public void option5() {
-        myList.showUrgentItems(myList);
+        // myList.showUrgentItems(myList);
+        printMap = myList.getMap();
+
+        System.out.println("—————[URGENT]—————");
+        for (String s : printMap.keySet()) {
+            if (printMap.get(s) == 2) {
+                System.out.println("- " + s);
+            }
+        }
+        System.out.println(newLine);
     }
 }

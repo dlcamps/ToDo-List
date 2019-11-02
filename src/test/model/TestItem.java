@@ -9,8 +9,8 @@ import model.ItemRegular;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestItem extends Item {
-    private ItemRegular iR;
-    private ItemUrgent iU;
+    private ItemRegular iR; // Regular Item
+    private ItemUrgent iU; // Urgent Item
 
     @BeforeEach
     public void setup() {
@@ -30,13 +30,6 @@ public class TestItem extends Item {
         assertTrue(iR.getName().equals("Regular Task"));
         iU.setName(("Urgent Task"));
         assertTrue(iU.getName().equals("[!!!] Urgent Task"));
-    }
-    @Test
-    public void testIsUrgentFromString() {
-        iR.setName("Regular Task");
-        assertFalse(isUrgentFromString(iR));
-        iU.setName("Urgent Task");
-        assertTrue(isUrgentFromString(iU));
     }
     @Test
     public void testRemoveUrgentTag() {

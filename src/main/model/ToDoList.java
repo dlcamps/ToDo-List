@@ -13,9 +13,9 @@ import java.util.Map;
 
 public class ToDoList implements FileRead, FileWrite {
 
-    private ArrayList<Item> list = new ArrayList<Item>();
-    String newLine = System.getProperty("line.separator");
-    Integer itemLine;
+    ArrayList<Item> list = new ArrayList<Item>();
+//    String newLine = System.getProperty("line.separator");
+//    Integer itemLine;
     Item itemToBeRemoved;
     Integer itemListPosition;
     Item itemToImport;
@@ -61,6 +61,14 @@ public class ToDoList implements FileRead, FileWrite {
         return list.get(i);
     }
 
+    public ArrayList<Item> getList() {
+        return list;
+    }
+
+    public Map<String, Integer> getMap() {
+        return itemLocations;
+    }
+
     public boolean isEmpty() {
         return list.isEmpty();
     }
@@ -78,7 +86,7 @@ public class ToDoList implements FileRead, FileWrite {
         itemListPosition = Integer.parseInt(s);
         itemToBeRemoved = list.get(itemListPosition - 1);
         list.remove(itemToBeRemoved);
-        if (itemToBeRemoved.isUrgentFromString(itemToBeRemoved)) {
+        if (itemToBeRemoved instanceof ItemUrgent) {
             itemLocations.remove(itemToBeRemoved.removeUrgentTag(itemToBeRemoved));
         } else {
             itemLocations.remove(itemToBeRemoved.getName());
@@ -88,14 +96,15 @@ public class ToDoList implements FileRead, FileWrite {
     // For testing
     public void removeWithItem(Item i) {
         list.remove(i);
-        if (i.isUrgentFromString(i)) {
+        if (i instanceof ItemUrgent) {
             itemLocations.remove(i.removeUrgentTag(i));
         } else {
             itemLocations.remove(i.getName());
         }
     }
 
-    public void showItems(ToDoList tdl) {
+    // Moved to ui.Main
+    /*public void showItems(ToDoList tdl) {
         itemLine = 1;
         System.out.println(newLine + "—————[TO-DO]—————");
         for (Item i: list) {
@@ -103,9 +112,10 @@ public class ToDoList implements FileRead, FileWrite {
             itemLine++;
         }
         System.out.println(newLine);
-    }
+    }*/
 
-    public void showUrgentItems(ToDoList tdl) {
+    // Moved to ui.Main
+/*    public void showUrgentItems(ToDoList tdl) {
         System.out.println("—————[URGENT]—————");
         for (String s : itemLocations.keySet()) {
             if (itemLocations.get(s) == 2) {
@@ -113,5 +123,5 @@ public class ToDoList implements FileRead, FileWrite {
             }
         }
         System.out.println(newLine);
-    }
+    }*/
 }
