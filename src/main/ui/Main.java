@@ -5,17 +5,17 @@ import model.ItemRegular;
 import model.ItemUrgent;
 import model.ToDoList;
 import model.exceptions.RemoveOnEmptyListException;
+import observer.AutoSave;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     ToDoList myList;
     Integer itemLine;
     ArrayList<Item> printList;
     Map<String, Integer> printMap;
+    Observer autoSave = new AutoSave();
     Item newItem;
     String itemType;
     String choice;
@@ -25,13 +25,14 @@ public class Main {
     String fileNameToWrite = "ToDoList";
 
     public static void main(String[] args) throws IOException, RemoveOnEmptyListException {
+        ReadWebPage.main(null);
         new Main();
     }
 
     public Main() throws IOException, RemoveOnEmptyListException {
 
         myList = new ToDoList();
-        myList.fileRead(fileNameToRead);
+        myList.fileRead(fileNameToRead, autoSave);
 
         System.out.println("[1] Add an Item");
         System.out.println("[2] Remove an Item");
@@ -126,3 +127,6 @@ public class Main {
         System.out.println(newLine);
     }
 }
+
+// TODO: Implement overridden getName() in ItemUrgent
+// TODO: Refactor option4() & option5() to move ToDoList related methods out of Main

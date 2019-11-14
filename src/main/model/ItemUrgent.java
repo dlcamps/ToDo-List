@@ -6,8 +6,9 @@ public class ItemUrgent extends Item {
     public void setName(String s) {
         name = "[!!!] " + s;
     }
-/*    @Override
-    public String getName(String s) {
-        return name.substring(6);
-    }*/
+
+//    @Override
+//    public String getName() {
+//        return name.substring(6);
+//    }
 }

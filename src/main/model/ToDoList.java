@@ -6,16 +6,11 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class ToDoList implements FileRead, FileWrite {
+public class ToDoList extends Observable implements FileRead, FileWrite {
 
     ArrayList<Item> list = new ArrayList<Item>();
-//    String newLine = System.getProperty("line.separator");
-//    Integer itemLine;
     Item itemToBeRemoved;
     Integer itemListPosition;
     Item itemToImport;
@@ -24,7 +19,7 @@ public class ToDoList implements FileRead, FileWrite {
     PrintWriter writer;
     Map<String, Integer> itemLocations = new HashMap<>(); // 1 = Regular, 2 = Urgent
 
-    public void fileRead(String fileNameToRead) throws IOException {
+    public void fileRead(String fileNameToRead, Observer observer) throws IOException {
         lines = Files.readAllLines(Paths.get("data/" + fileNameToRead + ".txt"));
         for (String line : lines) {
             if (line.trim().length() == 0) {
@@ -40,6 +35,7 @@ public class ToDoList implements FileRead, FileWrite {
             }
             list.add(itemToImport);
         }
+        addObserver(observer);
     }
 
     public void fileWrite(String fileNameToWrite) throws FileNotFoundException, UnsupportedEncodingException {
@@ -51,14 +47,28 @@ public class ToDoList implements FileRead, FileWrite {
         writer.close();
     }
 
-    // For testing
-    public boolean contains(Item i) {
-        return list.contains(i);
+    public void add(Item i) {
+        list.add(i);
+        if (i instanceof ItemRegular) {
+            itemLocations.put(i.getName(), 1);
+        } else if (i instanceof ItemUrgent) {
+            itemLocations.put(i.removeUrgentTag(i), 2);
+        }
+        setChanged();
+        notifyObservers();
     }
 
-    // For testing
-    public Item getItem(int i) {
-        return list.get(i);
+    public void removeWithString(String s) {
+        itemListPosition = Integer.parseInt(s);
+        itemToBeRemoved = list.get(itemListPosition - 1);
+        list.remove(itemToBeRemoved);
+        if (itemToBeRemoved instanceof ItemUrgent) {
+            itemLocations.remove(itemToBeRemoved.removeUrgentTag(itemToBeRemoved));
+        } else {
+            itemLocations.remove(itemToBeRemoved.getName());
+        }
+        setChanged();
+        notifyObservers();
     }
 
     public ArrayList<Item> getList() {
@@ -73,26 +83,6 @@ public class ToDoList implements FileRead, FileWrite {
         return list.isEmpty();
     }
 
-    public void add(Item i) {
-        list.add(i);
-        if (i instanceof ItemRegular) {
-            itemLocations.put(i.getName(), 1);
-        } else if (i instanceof ItemUrgent) {
-            itemLocations.put(i.removeUrgentTag(i), 2);
-        }
-    }
-
-    public void removeWithString(String s) {
-        itemListPosition = Integer.parseInt(s);
-        itemToBeRemoved = list.get(itemListPosition - 1);
-        list.remove(itemToBeRemoved);
-        if (itemToBeRemoved instanceof ItemUrgent) {
-            itemLocations.remove(itemToBeRemoved.removeUrgentTag(itemToBeRemoved));
-        } else {
-            itemLocations.remove(itemToBeRemoved.getName());
-        }
-    }
-
     // For testing
     public void removeWithItem(Item i) {
         list.remove(i);
@@ -103,25 +93,13 @@ public class ToDoList implements FileRead, FileWrite {
         }
     }
 
-    // Moved to ui.Main
-    /*public void showItems(ToDoList tdl) {
-        itemLine = 1;
-        System.out.println(newLine + "—————[TO-DO]—————");
-        for (Item i: list) {
-            System.out.println("(" + itemLine + ")" + " " + i.getName());
-            itemLine++;
-        }
-        System.out.println(newLine);
-    }*/
+    // For testing
+    public boolean contains(Item i) {
+        return list.contains(i);
+    }
 
-    // Moved to ui.Main
-/*    public void showUrgentItems(ToDoList tdl) {
-        System.out.println("—————[URGENT]—————");
-        for (String s : itemLocations.keySet()) {
-            if (itemLocations.get(s) == 2) {
-                System.out.println("- " + s);
-            }
-        }
-        System.out.println(newLine);
-    }*/
+    // For testing
+    public Item getItem(int i) {
+        return list.get(i);
+    }
 }
