@@ -19,8 +19,8 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
     PrintWriter writer;
     Map<String, Integer> itemLocations = new HashMap<>(); // 1 = Regular, 2 = Urgent
 
-    public void fileRead(String fileNameToRead, Observer observer) throws IOException {
-        lines = Files.readAllLines(Paths.get("data/" + fileNameToRead + ".txt"));
+    public void fileRead(String readFile, Observer observer) throws IOException {
+        lines = Files.readAllLines(Paths.get("data/" + readFile + ".txt"));
         for (String line : lines) {
             if (line.trim().length() == 0) {
                 continue;
@@ -38,8 +38,8 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
         addObserver(observer);
     }
 
-    public void fileWrite(String fileNameToWrite) throws FileNotFoundException, UnsupportedEncodingException {
-        writer = new PrintWriter("data/" + fileNameToWrite + ".txt","UTF-8");
+    public void fileWrite(String writeFile) throws FileNotFoundException, UnsupportedEncodingException {
+        writer = new PrintWriter("data/" + writeFile + ".txt","UTF-8");
         for (Item i : list) {
             nameToExport = i.getName();
             writer.println(nameToExport);

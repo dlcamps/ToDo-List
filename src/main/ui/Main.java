@@ -29,6 +29,15 @@ public class Main {
         new Main();
     }
 
+    public String getFileName(Integer i) {
+        if (i == 1) {
+            return this.fileNameToRead;
+        } else if (i == 2) {
+            return this.fileNameToWrite;
+        }
+        return null;
+    }
+
     public Main() throws IOException, RemoveOnEmptyListException {
 
         myList = new ToDoList();
