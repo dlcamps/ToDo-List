@@ -29,15 +29,6 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
         }
     }
 
-/*    public String getFileName(Integer i) { // 1 = Read, 2 = Write
-        if (i == 1) {
-            return this.fileNameToRead;
-        } else if (i == 2) {
-            return this.fileNameToWrite;
-        }
-        return null;
-    }*/
-
     public void fileRead(Observer observer) throws IOException {
         lines = Files.readAllLines(Paths.get("data/" + fileNameToRead + ".txt"));
         for (String line : lines) {
