@@ -36,6 +36,7 @@ public class TestFileWrite {
     public void testFileWrite() throws IOException {
         myList.setFileName(2, writeName);
         myList.setFileName(1, writeName);
+        myList.fileWrite();
         myList.fileRead(autoSave);
         itemToCompare = myList.getItem(0);
         assertEquals(itemToCompare.getName(), "[!!!] ToDo1");
