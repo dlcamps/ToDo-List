@@ -1,15 +1,10 @@
 package model;
 
-import model.Item;
-import model.ItemRegular;
-import model.ItemUrgent;
-import model.ToDoList;
-import observer.AutoSave;
+import model.observer.AutoSave;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Observer;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +15,7 @@ public class TestFileWrite {
     private ItemRegular i2;
     private ItemRegular i3;
     private Item itemToCompare;
-    private String fileNameToWrite = "ForTestWrite";
+    private String writeName = "ForTestWrite";
     private Observer autoSave;
 
     @BeforeEach
@@ -39,8 +34,9 @@ public class TestFileWrite {
     }
     @Test
     public void testFileWrite() throws IOException {
-        myList.fileWrite(fileNameToWrite);
-        myList.fileRead(fileNameToWrite, autoSave);
+        myList.setFileName(2, writeName);
+        myList.setFileName(1, writeName);
+        myList.fileRead(autoSave);
         itemToCompare = myList.getItem(0);
         assertEquals(itemToCompare.getName(), "[!!!] ToDo1");
         itemToCompare = myList.getItem(1);

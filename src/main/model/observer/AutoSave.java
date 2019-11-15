@@ -1,4 +1,4 @@
-package observer;
+package model.observer;
 
 import model.ToDoList;
 import ui.Main;
@@ -12,10 +12,8 @@ public class AutoSave implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         ToDoList tdl = (ToDoList) o;
-        Main m = (Main) arg;
-        String writeTo = m.getFileName(2);
         try {
-            tdl.fileWrite(writeTo);
+            tdl.fileWrite();
         } catch (FileNotFoundException e) {
             //
         } catch (UnsupportedEncodingException e) {

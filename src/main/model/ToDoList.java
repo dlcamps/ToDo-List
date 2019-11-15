@@ -18,9 +18,28 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
     List<String> lines;
     PrintWriter writer;
     Map<String, Integer> itemLocations = new HashMap<>(); // 1 = Regular, 2 = Urgent
+    String fileNameToRead = "ToDoList";
+    String fileNameToWrite = "ToDoList";
 
-    public void fileRead(String readFile, Observer observer) throws IOException {
-        lines = Files.readAllLines(Paths.get("data/" + readFile + ".txt"));
+    public void setFileName(Integer i, String name) { // 1 = Read, 2 = Write
+        if (i == 1) {
+            this.fileNameToRead = name;
+        } else if (i == 2) {
+            this.fileNameToWrite = name;
+        }
+    }
+
+/*    public String getFileName(Integer i) { // 1 = Read, 2 = Write
+        if (i == 1) {
+            return this.fileNameToRead;
+        } else if (i == 2) {
+            return this.fileNameToWrite;
+        }
+        return null;
+    }*/
+
+    public void fileRead(Observer observer) throws IOException {
+        lines = Files.readAllLines(Paths.get("data/" + fileNameToRead + ".txt"));
         for (String line : lines) {
             if (line.trim().length() == 0) {
                 continue;
@@ -38,8 +57,8 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
         addObserver(observer);
     }
 
-    public void fileWrite(String writeFile) throws FileNotFoundException, UnsupportedEncodingException {
-        writer = new PrintWriter("data/" + writeFile + ".txt","UTF-8");
+    public void fileWrite() throws FileNotFoundException, UnsupportedEncodingException {
+        writer = new PrintWriter("data/" + fileNameToWrite + ".txt","UTF-8");
         for (Item i : list) {
             nameToExport = i.getName();
             writer.println(nameToExport);

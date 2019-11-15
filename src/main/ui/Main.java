@@ -5,7 +5,7 @@ import model.ItemRegular;
 import model.ItemUrgent;
 import model.ToDoList;
 import model.exceptions.RemoveOnEmptyListException;
-import observer.AutoSave;
+import model.observer.AutoSave;
 
 import java.io.IOException;
 import java.util.*;
@@ -21,27 +21,16 @@ public class Main {
     String choice;
     Scanner scanner = new Scanner(System.in);
     String newLine = System.getProperty("line.separator");
-    String fileNameToRead = "ToDoList";
-    String fileNameToWrite = "ToDoList";
 
     public static void main(String[] args) throws IOException, RemoveOnEmptyListException {
         ReadWebPage.main(null);
         new Main();
     }
 
-    public String getFileName(Integer i) {
-        if (i == 1) {
-            return this.fileNameToRead;
-        } else if (i == 2) {
-            return this.fileNameToWrite;
-        }
-        return null;
-    }
-
     public Main() throws IOException, RemoveOnEmptyListException {
 
         myList = new ToDoList();
-        myList.fileRead(fileNameToRead, autoSave);
+        myList.fileRead(autoSave);
 
         System.out.println("[1] Add an Item");
         System.out.println("[2] Remove an Item");
@@ -63,7 +52,7 @@ public class Main {
                 option3();
             }
             if (choice.equals("4")) {
-                myList.fileWrite(fileNameToWrite);
+                myList.fileWrite();
                 System.out.println("*** Saved ***");
                 break;
             }
