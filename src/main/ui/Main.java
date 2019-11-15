@@ -35,8 +35,8 @@ public class Main {
         System.out.println("[1] Add an Item");
         System.out.println("[2] Remove an Item");
         System.out.println("[3] Show All Items");
-        System.out.println("[4] Save the File & Quit the Program");
-        System.out.println("[5] Show All URGENT Items" + newLine);
+        System.out.println("[4] Show All Urgent Items" + newLine);
+        System.out.println("[5] Quit the Program");
 
         while (true) {
             System.out.println("Select an Option:");
@@ -52,12 +52,10 @@ public class Main {
                 option3();
             }
             if (choice.equals("4")) {
-                myList.fileWrite();
-                System.out.println("*** Saved ***");
-                break;
+                option4();
             }
             if (choice.equals("5")) {
-                option5();
+                break;
             }
         }
     }
@@ -99,7 +97,6 @@ public class Main {
     }
 
     public void option3() {
-        // myList.showItems(myList);
         itemLine = 1;
         printList = new ArrayList<>();
         printList = myList.getList();
@@ -112,8 +109,7 @@ public class Main {
         System.out.println(newLine);
     }
 
-    public void option5() {
-        // myList.showUrgentItems(myList);
+    public void option4() {
         printMap = myList.getMap();
 
         System.out.println("—————[URGENT]—————");
