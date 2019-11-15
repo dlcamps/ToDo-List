@@ -21,14 +21,6 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
     String fileNameToRead = "ToDoList";
     String fileNameToWrite = "ToDoList";
 
-    public void setFileName(Integer i, String name) { // 1 = Read, 2 = Write
-        if (i == 1) {
-            this.fileNameToRead = name;
-        } else if (i == 2) {
-            this.fileNameToWrite = name;
-        }
-    }
-
     public void fileRead(Observer observer) throws IOException {
         lines = Files.readAllLines(Paths.get("data/" + fileNameToRead + ".txt"));
         for (String line : lines) {
@@ -79,6 +71,14 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
         }
         setChanged();
         notifyObservers();
+    }
+
+    public void setFileName(Integer i, String name) { // 1 = Read, 2 = Write
+        if (i == 1) {
+            this.fileNameToRead = name;
+        } else if (i == 2) {
+            this.fileNameToWrite = name;
+        }
     }
 
     public ArrayList<Item> getList() {

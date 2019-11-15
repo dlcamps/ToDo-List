@@ -34,8 +34,10 @@ public class TestFileWrite {
     }
     @Test
     public void testFileWrite() throws IOException {
-        myList.setFileName(2, writeName);
         myList.setFileName(1, writeName);
+        myList.setFileName(2, writeName);
+        assertTrue(myList.fileNameToRead.equals("ForTestWrite"));
+        assertTrue(myList.fileNameToWrite.equals("ForTestWrite"));
         myList.fileWrite();
         myList.fileRead(autoSave);
         itemToCompare = myList.getItem(0);
