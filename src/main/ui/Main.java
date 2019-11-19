@@ -12,16 +12,17 @@ import java.io.IOException;
 import java.util.*;
 
 public class Main {
-//    ToDoList myList;
+    ToDoList myList;
     Integer itemLine;
     ArrayList<Item> printList;
     Map<String, Integer> printMap;
-//    Observer autoSave = new AutoSave();
+    Observer autoSave = new AutoSave();
     Item newItem;
     String itemType;
     String choice;
     Scanner scanner = new Scanner(System.in);
     String newLine = System.getProperty("line.separator");
+    ArrayList<String> itemNameImportList;
 
     public static void main(String[] args) throws IOException, RemoveOnEmptyListException {
         ReadWebPage.main(null);
@@ -30,8 +31,15 @@ public class Main {
 
     public Main() throws IOException, RemoveOnEmptyListException {
 
-        /*myList = new ToDoList();
-        myList.fileRead(autoSave);*/
+        myList = new ToDoList();
+        myList.fileRead(autoSave);
+        itemNameImportList = new ArrayList<>();
+        itemNameImportList = myList.convertItemListToStringList(myList);
+    }
+
+    public ArrayList<String> getImports() {
+        return itemNameImportList;
+    }
 
         /*System.out.println("[1] Add an Item");
         System.out.println("[2] Remove an Item");
@@ -121,8 +129,8 @@ public class Main {
             }
         }
         System.out.println(newLine);
-    }*/
-}
+    }
+}*/
 
 // TODO: Implement overridden getName() in ItemUrgent
 // TODO: Refactor option4() & option5() to move ToDoList related methods out of Main

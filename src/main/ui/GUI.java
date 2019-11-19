@@ -57,11 +57,22 @@ public class GUI extends JPanel implements ListSelectionListener {
     private Observer autoSave;
     private ToDoList myList;
 
-    public GUI() {
+    public GUI() throws IOException {
         super(new BorderLayout());
 
         listModel = new DefaultListModel();
         listModel.addElement(" ");
+
+        autoSave = new AutoSave();
+        myList = new ToDoList();
+        myList.fileRead(autoSave);
+        itemNameImportList = new ArrayList<>();
+        itemNameImportList = myList.convertItemListToStringList(myList);
+        if (!itemNameImportList.isEmpty()) {
+            for (String s : itemNameImportList) {
+                listModel.addElement(s);
+            }
+        }
 
         //Create the list and put it in a scroll pane.
         list = new JList(listModel);
@@ -243,7 +254,7 @@ public class GUI extends JPanel implements ListSelectionListener {
      * this method should be invoked from the
      * event-dispatching thread.
      */
-    private static void createAndShowGUI() {
+    private static void createAndShowGUI() throws IOException {
         //Create and set up the window.
         JFrame frame = new JFrame("To-Do List");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -265,7 +276,11 @@ public class GUI extends JPanel implements ListSelectionListener {
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                createAndShowGUI();
+                try {
+                    createAndShowGUI();
+                } catch (IOException e) {
+                    //
+                }
             }
         });
     }
