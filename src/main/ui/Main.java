@@ -6,6 +6,7 @@ import model.ItemUrgent;
 import model.ToDoList;
 import model.exceptions.RemoveOnEmptyListException;
 import model.observer.AutoSave;
+import network.ReadWebPage;
 
 import java.io.IOException;
 import java.util.*;
@@ -23,7 +24,7 @@ public class Main {
     String newLine = System.getProperty("line.separator");
 
     public static void main(String[] args) throws IOException, RemoveOnEmptyListException {
-        ReadWebPage.main(null);
+        // ReadWebPage.main(null);
         new Main();
     }
 
@@ -32,11 +33,11 @@ public class Main {
         myList = new ToDoList();
         myList.fileRead(autoSave);
 
-        System.out.println("[1] Add an Item");
+        /*System.out.println("[1] Add an Item");
         System.out.println("[2] Remove an Item");
         System.out.println("[3] Show All Items");
-        System.out.println("[4] Show All Urgent Items" + newLine);
-        System.out.println("[5] Quit the Program");
+        System.out.println("[4] Show All Urgent Items");
+        System.out.println("[5] Quit the Program" + newLine);
 
         while (true) {
             System.out.println("Select an Option:");
@@ -55,13 +56,14 @@ public class Main {
                 option4();
             }
             if (choice.equals("5")) {
+                System.out.println("Exiting...");
                 break;
             }
-        }
+        }*/
     }
 
     public void option1() {
-        System.out.println("Select Item Type: [1] Regular Item, [2] Urgent Item");
+        System.out.println("Select Item Type: [1] Regular [2] Urgent");
         scanner.nextLine();
         itemType = scanner.nextLine();
         if (itemType.equals("1")) {                 // Regular

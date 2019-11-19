@@ -40,6 +40,7 @@ public class TestAutoSave {
         myList.add(iR);
         assertTrue(myList.contains(iR));
         myList.setFileName(1, readName);
+        myList.setFileName(2, writeName);
         myList.fileRead(autoSave);
         assertTrue(myList.contains(iR));
     }
@@ -51,6 +52,7 @@ public class TestAutoSave {
         assertTrue(myList.contains(iU));
         myList.removeWithItem(iU);
         myList.setFileName(1, readName);
+        myList.setFileName(2, writeName);
         myList.fileRead(autoSave);
         assertFalse(myList.contains(iU));
     }
