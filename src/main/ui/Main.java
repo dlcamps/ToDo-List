@@ -12,18 +12,16 @@ import java.io.IOException;
 import java.util.*;
 
 public class Main {
-    ToDoList myList;
+//    ToDoList myList;
     Integer itemLine;
     ArrayList<Item> printList;
     Map<String, Integer> printMap;
-    Observer autoSave = new AutoSave();
+//    Observer autoSave = new AutoSave();
     Item newItem;
     String itemType;
     String choice;
     Scanner scanner = new Scanner(System.in);
     String newLine = System.getProperty("line.separator");
-    GUI gui = new GUI();
-    ArrayList<String> itemNameList = new ArrayList<>();
 
     public static void main(String[] args) throws IOException, RemoveOnEmptyListException {
         ReadWebPage.main(null);
@@ -32,10 +30,8 @@ public class Main {
 
     public Main() throws IOException, RemoveOnEmptyListException {
 
-        myList = new ToDoList();
-        myList.fileRead(autoSave);
-        /*itemNameList = myList.convertItemListToStringList(myList);
-        gui.loadThenRun(itemNameList);*/
+        /*myList = new ToDoList();
+        myList.fileRead(autoSave);*/
 
         /*System.out.println("[1] Add an Item");
         System.out.println("[2] Remove an Item");
@@ -66,7 +62,7 @@ public class Main {
         }*/
     }
 
-    public void option1() {
+    /*public void option1() {
         System.out.println("Select Item Type: [1] Regular [2] Urgent");
         scanner.nextLine();
         itemType = scanner.nextLine();
@@ -125,7 +121,7 @@ public class Main {
             }
         }
         System.out.println(newLine);
-    }
+    }*/
 }
 
 // TODO: Implement overridden getName() in ItemUrgent

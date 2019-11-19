@@ -31,8 +31,15 @@
 
 package ui;
 
+import model.ToDoList;
+import model.exceptions.RemoveOnEmptyListException;
+import model.observer.AutoSave;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Observer;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -46,12 +53,15 @@ public class GUI extends JPanel implements ListSelectionListener {
     private JTextField itemName;
 
     private Integer numberOfColumns = 15;
+    private ArrayList<String> itemNameImportList;
+    private Observer autoSave;
+    private ToDoList myList;
 
     public GUI() {
         super(new BorderLayout());
 
         listModel = new DefaultListModel();
-        listModel.addElement("Item 1");
+        listModel.addElement(" ");
 
         //Create the list and put it in a scroll pane.
         list = new JList(listModel);
@@ -215,6 +225,19 @@ public class GUI extends JPanel implements ListSelectionListener {
         }
     }
 
+    public void loadBeforeRunning() throws IOException {
+        autoSave = new AutoSave();
+        myList = new ToDoList();
+        myList.fileRead(autoSave);
+        itemNameImportList = new ArrayList<>();
+        itemNameImportList = myList.convertItemListToStringList(myList);
+        if (!itemNameImportList.isEmpty()) {
+            for (String s : itemNameImportList) {
+                listModel.addElement(s);
+            }
+        }
+    }
+
     /**
      * Create the GUI and show it.  For thread safety,
      * this method should be invoked from the
@@ -235,7 +258,9 @@ public class GUI extends JPanel implements ListSelectionListener {
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, RemoveOnEmptyListException {
+//        Main.main(null);
+
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
