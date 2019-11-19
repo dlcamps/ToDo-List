@@ -61,18 +61,18 @@ public class GUI extends JPanel implements ListSelectionListener {
         super(new BorderLayout());
 
         listModel = new DefaultListModel();
-        listModel.addElement(" ");
 
         autoSave = new AutoSave();
         myList = new ToDoList();
         myList.fileRead(autoSave);
-        itemNameImportList = new ArrayList<>();
-        itemNameImportList = myList.convertItemListToStringList(myList);
-        if (!itemNameImportList.isEmpty()) {
+        if (!(myList.getList().isEmpty())) {
+            itemNameImportList = new ArrayList<>();
+            itemNameImportList = myList.convertItemListToStringList(myList);
             for (String s : itemNameImportList) {
                 listModel.addElement(s);
             }
         }
+        listModel.addElement(" ");
 
         //Create the list and put it in a scroll pane.
         list = new JList(listModel);
@@ -236,19 +236,6 @@ public class GUI extends JPanel implements ListSelectionListener {
         }
     }
 
-    public void loadBeforeRunning() throws IOException {
-        autoSave = new AutoSave();
-        myList = new ToDoList();
-        myList.fileRead(autoSave);
-        itemNameImportList = new ArrayList<>();
-        itemNameImportList = myList.convertItemListToStringList(myList);
-        if (!itemNameImportList.isEmpty()) {
-            for (String s : itemNameImportList) {
-                listModel.addElement(s);
-            }
-        }
-    }
-
     /**
      * Create the GUI and show it.  For thread safety,
      * this method should be invoked from the
@@ -270,8 +257,6 @@ public class GUI extends JPanel implements ListSelectionListener {
     }
 
     public static void main(String[] args) throws IOException, RemoveOnEmptyListException {
-//        Main.main(null);
-
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
