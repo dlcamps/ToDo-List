@@ -51,6 +51,7 @@ public class GUI extends JPanel implements ListSelectionListener {
         super(new BorderLayout());
 
         listModel = new DefaultListModel();
+        listModel.addElement("Item 1");
 
         //Create the list and put it in a scroll pane.
         list = new JList(listModel);
