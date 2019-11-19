@@ -20,6 +20,8 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
     Map<String, Integer> itemLocations = new HashMap<>(); // 1 = Regular, 2 = Urgent
     String fileNameToRead = "ToDoList";
     String fileNameToWrite = "ToDoList";
+    ArrayList<Item> tempList;
+    ArrayList<String> passToGUI;
 
     public void fileRead(Observer observer) throws IOException {
         lines = Files.readAllLines(Paths.get("data/" + fileNameToRead + ".txt"));
@@ -71,6 +73,18 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
         }
         setChanged();
         notifyObservers();
+    }
+
+    public ArrayList<String> convertItemListToStringList(ToDoList tdl) {
+        if (!(tdl.getList().isEmpty())) {
+            tempList = new ArrayList<>();
+            tempList = tdl.getList();
+            passToGUI = new ArrayList<>();
+            for (Item i : tempList) {
+                passToGUI.add(i.getName());
+            }
+        }
+        return passToGUI;
     }
 
     public void setFileName(Integer i, String name) { // 1 = Read, 2 = Write

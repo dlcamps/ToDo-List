@@ -22,9 +22,11 @@ public class Main {
     String choice;
     Scanner scanner = new Scanner(System.in);
     String newLine = System.getProperty("line.separator");
+    GUI gui = new GUI();
+    ArrayList<String> itemNameList = new ArrayList<>();
 
     public static void main(String[] args) throws IOException, RemoveOnEmptyListException {
-        // ReadWebPage.main(null);
+        ReadWebPage.main(null);
         new Main();
     }
 
@@ -32,6 +34,8 @@ public class Main {
 
         myList = new ToDoList();
         myList.fileRead(autoSave);
+        /*itemNameList = myList.convertItemListToStringList(myList);
+        gui.loadThenRun(itemNameList);*/
 
         /*System.out.println("[1] Add an Item");
         System.out.println("[2] Remove an Item");

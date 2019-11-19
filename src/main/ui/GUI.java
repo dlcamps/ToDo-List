@@ -36,7 +36,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class ListDemo extends JPanel implements ListSelectionListener {
+public class GUI extends JPanel implements ListSelectionListener {
     private JList list;
     private DefaultListModel listModel;
 
@@ -47,11 +47,10 @@ public class ListDemo extends JPanel implements ListSelectionListener {
 
     private Integer numberOfColumns = 15;
 
-    public ListDemo() {
+    public GUI() {
         super(new BorderLayout());
 
         listModel = new DefaultListModel();
-        listModel.addElement("Item 1");
 
         //Create the list and put it in a scroll pane.
         list = new JList(listModel);
@@ -69,18 +68,16 @@ public class ListDemo extends JPanel implements ListSelectionListener {
 
         removeButton = new JButton(removeString);
         removeButton.setActionCommand(removeString);
-        removeButton.addActionListener(new FireListener());
+        removeButton.addActionListener(new RemoveListener());
 
         itemName = new JTextField(numberOfColumns);
         itemName.addActionListener(addListener);
         itemName.getDocument().addDocumentListener(addListener);
-        String name = listModel.getElementAt(
-                list.getSelectedIndex()).toString();
+        String name = listModel.getElementAt(list.getSelectedIndex()).toString();
 
         //Create a panel that uses BoxLayout.
         JPanel buttonPane = new JPanel();
-        buttonPane.setLayout(new BoxLayout(buttonPane,
-                BoxLayout.LINE_AXIS));
+        buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
         buttonPane.add(removeButton);
         buttonPane.add(Box.createHorizontalStrut(5));
         buttonPane.add(new JSeparator(SwingConstants.VERTICAL));
@@ -96,7 +93,7 @@ public class ListDemo extends JPanel implements ListSelectionListener {
         add(buttonPane, BorderLayout.PAGE_END);
     }
 
-    class FireListener implements ActionListener {
+    class RemoveListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             //This method can be called only if
             //there's a valid selection
@@ -228,7 +225,7 @@ public class ListDemo extends JPanel implements ListSelectionListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Create and set up the content pane.
-        JComponent newContentPane = new ListDemo();
+        JComponent newContentPane = new GUI();
         newContentPane.setOpaque(true); //content panes must be opaque
         frame.setContentPane(newContentPane);
 
