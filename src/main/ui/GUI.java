@@ -43,6 +43,10 @@ import java.util.Observer;
 import javax.swing.*;
 import javax.swing.event.*;
 
+// TODO: Fix program not starting unless there's a default item loaded in
+// TODO: Add 'Quit' button that closes the program
+// TODO: Add 'Regular' and 'Urgent' toggle button to select item type
+
 public class GUI extends JPanel implements ListSelectionListener {
     private JList list;
     private DefaultListModel listModel;
