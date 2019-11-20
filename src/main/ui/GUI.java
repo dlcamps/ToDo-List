@@ -44,7 +44,7 @@ import java.util.Observer;
 import javax.swing.*;
 import javax.swing.event.*;
 
-// TODO: Add 'Regular' and 'Urgent' toggle button to select item type
+// TODO: Add selection to show full ToDoList or just urgent items
 
 public class GUI extends JPanel implements ListSelectionListener {
     private JList list;
@@ -64,8 +64,8 @@ public class GUI extends JPanel implements ListSelectionListener {
     private static final String regularString = "Regular";
     private static final String urgentString = "Urgent";
     private JButton quitButton;
-    private JButton regularButton;
-    private JButton urgentButton;
+    private JRadioButton regularButton;
+    private JRadioButton urgentButton;
 
     public GUI() throws IOException {
         super(new BorderLayout());
@@ -108,12 +108,12 @@ public class GUI extends JPanel implements ListSelectionListener {
         quitButton.setActionCommand(quitString);
         quitButton.addActionListener(new QuitListener());
 
-        JRadioButton regularButton = new JRadioButton(regularString);
+        regularButton = new JRadioButton(regularString);
         regularButton.setMnemonic(KeyEvent.VK_B);
         regularButton.setActionCommand(regularString);
         regularButton.setSelected(true);
 
-        JRadioButton urgentButton = new JRadioButton(urgentString);
+        urgentButton = new JRadioButton(urgentString);
         urgentButton.setMnemonic(KeyEvent.VK_B);
         urgentButton.setActionCommand(urgentString);
         urgentButton.setSelected(false);
@@ -229,10 +229,15 @@ public class GUI extends JPanel implements ListSelectionListener {
                 index++;
             }
 
-            listModel.insertElementAt(itemName.getText(), index);
             //If we just wanted to add to the end, we'd do this:
             //listModel.addElement(itemName.getText());
-            myList.createItem(1, itemName.getText());
+            if (regularButton.isSelected() == true) {
+                listModel.insertElementAt(itemName.getText(), index);
+                myList.createItem(1, itemName.getText());
+            } else if (urgentButton.isSelected() == true) {
+                listModel.insertElementAt("[!!!] " + itemName.getText(), index);
+                myList.createItem(2, itemName.getText());
+            }
 
             //Reset the text field.
             itemName.requestFocusInWindow();
