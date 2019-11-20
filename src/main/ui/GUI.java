@@ -43,7 +43,6 @@ import java.util.Observer;
 import javax.swing.*;
 import javax.swing.event.*;
 
-// TODO: Fix program not starting unless there's a default item loaded in
 // TODO: Add 'Quit' button that closes the program
 // TODO: Add 'Regular' and 'Urgent' toggle button to select item type
 
@@ -61,6 +60,8 @@ public class GUI extends JPanel implements ListSelectionListener {
     private Observer autoSave;
     private ToDoList myList;
     private Boolean startFromScratch;
+    private static final String quitString = "Quit";
+    private JButton quitButton;
 
     public GUI() throws IOException {
         super(new BorderLayout());
@@ -99,6 +100,10 @@ public class GUI extends JPanel implements ListSelectionListener {
         removeButton.setActionCommand(removeString);
         removeButton.addActionListener(new RemoveListener());
 
+        quitButton = new JButton(quitString);
+        quitButton.setActionCommand(quitString);
+        quitButton.addActionListener(new QuitListener());
+
         itemName = new JTextField(numberOfColumns);
         itemName.addActionListener(addListener);
         itemName.getDocument().addDocumentListener(addListener);
@@ -120,16 +125,25 @@ public class GUI extends JPanel implements ListSelectionListener {
         buttonPane.add(Box.createHorizontalStrut(5));
         buttonPane.add(new JSeparator(SwingConstants.VERTICAL));
         buttonPane.add(Box.createHorizontalStrut(5));
+        buttonPane.add(addButton);
+        buttonPane.add(Box.createHorizontalStrut(5));
+        buttonPane.add(new JSeparator(SwingConstants.VERTICAL));
+        buttonPane.add(Box.createHorizontalStrut(5));
         buttonPane.add(itemName);
         buttonPane.add(Box.createHorizontalStrut(5));
         buttonPane.add(new JSeparator(SwingConstants.VERTICAL));
         buttonPane.add(Box.createHorizontalStrut(5));
-        buttonPane.add(addButton);
+        buttonPane.add(quitButton);
         buttonPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
         add(listScrollPane, BorderLayout.CENTER);
         add(buttonPane, BorderLayout.PAGE_END);
 
+    }
+    class QuitListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            return;
+        }
     }
 
     class RemoveListener implements ActionListener {
