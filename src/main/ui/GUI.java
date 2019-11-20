@@ -61,7 +61,11 @@ public class GUI extends JPanel implements ListSelectionListener {
     private ToDoList myList;
     private Boolean startFromScratch;
     private static final String quitString = "Quit";
+    private static final String regularString = "Regular";
+    private static final String urgentString = "Urgent";
     private JButton quitButton;
+    private JButton regularButton;
+    private JButton urgentButton;
 
     public GUI() throws IOException {
         super(new BorderLayout());
@@ -104,6 +108,26 @@ public class GUI extends JPanel implements ListSelectionListener {
         quitButton.setActionCommand(quitString);
         quitButton.addActionListener(new QuitListener());
 
+        JRadioButton regularButton = new JRadioButton(regularString);
+        regularButton.setMnemonic(KeyEvent.VK_B);
+        regularButton.setActionCommand(regularString);
+        regularButton.setSelected(true);
+
+        JRadioButton urgentButton = new JRadioButton(urgentString);
+        urgentButton.setMnemonic(KeyEvent.VK_B);
+        urgentButton.setActionCommand(urgentString);
+        urgentButton.setSelected(false);
+        ButtonGroup group = new ButtonGroup();
+        group.add(regularButton);
+        group.add(urgentButton);
+        regularButton.addActionListener(addListener);
+        urgentButton.addActionListener(addListener);
+        JPanel radioPanel = new JPanel(new GridLayout(0, 1));
+        radioPanel.add(regularButton);
+        radioPanel.add(urgentButton);
+        add(radioPanel, BorderLayout.LINE_START);
+        setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+
         itemName = new JTextField(numberOfColumns);
         itemName.addActionListener(addListener);
         itemName.getDocument().addDocumentListener(addListener);
@@ -126,6 +150,11 @@ public class GUI extends JPanel implements ListSelectionListener {
         buttonPane.add(new JSeparator(SwingConstants.VERTICAL));
         buttonPane.add(Box.createHorizontalStrut(5));
         buttonPane.add(addButton);
+        buttonPane.add(Box.createHorizontalStrut(5));
+        buttonPane.add(new JSeparator(SwingConstants.VERTICAL));
+        buttonPane.add(Box.createHorizontalStrut(5));
+        buttonPane.add(regularButton);
+        buttonPane.add(urgentButton);
         buttonPane.add(Box.createHorizontalStrut(5));
         buttonPane.add(new JSeparator(SwingConstants.VERTICAL));
         buttonPane.add(Box.createHorizontalStrut(5));
@@ -285,7 +314,7 @@ public class GUI extends JPanel implements ListSelectionListener {
         frame.setContentPane(newContentPane);
 
         //Display the window.
-        frame.setSize(600, 500);
+        frame.setSize(800, 500);
         frame.setVisible(true);
     }
 
