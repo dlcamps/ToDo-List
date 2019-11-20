@@ -79,8 +79,8 @@ public class GUI extends JPanel implements ListSelectionListener {
             }
         } else if (myList.getList().isEmpty()) {
             startFromScratch = true;
+            listModel.addElement("Insert Item Here");
         }
-        listModel.addElement(" ");
 
         //Create the list and put it in a scroll pane.
         list = new JList(listModel);
@@ -94,11 +94,6 @@ public class GUI extends JPanel implements ListSelectionListener {
         AddListener addListener = new AddListener(addButton);
         addButton.setActionCommand(addString);
         addButton.addActionListener(addListener);
-        if (startFromScratch) {
-            addButton.setEnabled(true);
-        } else if (!startFromScratch) {
-            addButton.setEnabled(false);
-        }
 
         removeButton = new JButton(removeString);
         removeButton.setActionCommand(removeString);
@@ -108,6 +103,15 @@ public class GUI extends JPanel implements ListSelectionListener {
         itemName.addActionListener(addListener);
         itemName.getDocument().addDocumentListener(addListener);
         String name = listModel.getElementAt(list.getSelectedIndex()).toString();
+
+        if (startFromScratch) {
+            addButton.setEnabled(true);
+            removeButton.setEnabled(false);
+            listModel.remove(0);
+        } else if (!startFromScratch) {
+            addButton.setEnabled(false);
+            removeButton.setEnabled(true);
+        }
 
         //Create a panel that uses BoxLayout.
         JPanel buttonPane = new JPanel();
@@ -125,6 +129,7 @@ public class GUI extends JPanel implements ListSelectionListener {
 
         add(listScrollPane, BorderLayout.CENTER);
         add(buttonPane, BorderLayout.PAGE_END);
+
     }
 
     class RemoveListener implements ActionListener {
