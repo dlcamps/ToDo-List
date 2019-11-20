@@ -60,6 +60,7 @@ public class GUI extends JPanel implements ListSelectionListener {
     private ArrayList<String> itemNameImportList;
     private Observer autoSave;
     private ToDoList myList;
+    private Boolean startFromScratch;
 
     public GUI() throws IOException {
         super(new BorderLayout());
@@ -70,11 +71,14 @@ public class GUI extends JPanel implements ListSelectionListener {
         myList = new ToDoList();
         myList.fileRead(autoSave);
         if (!(myList.getList().isEmpty())) {
+            startFromScratch = false;
             itemNameImportList = new ArrayList<>();
             itemNameImportList = myList.convertItemListToStringList(myList);
             for (String s : itemNameImportList) {
                 listModel.addElement(s);
             }
+        } else if (myList.getList().isEmpty()) {
+            startFromScratch = true;
         }
         listModel.addElement(" ");
 
@@ -90,7 +94,11 @@ public class GUI extends JPanel implements ListSelectionListener {
         AddListener addListener = new AddListener(addButton);
         addButton.setActionCommand(addString);
         addButton.addActionListener(addListener);
-        addButton.setEnabled(false);
+        if (startFromScratch) {
+            addButton.setEnabled(true);
+        } else if (!startFromScratch) {
+            addButton.setEnabled(false);
+        }
 
         removeButton = new JButton(removeString);
         removeButton.setActionCommand(removeString);

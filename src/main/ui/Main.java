@@ -33,15 +33,8 @@ public class Main {
 
         myList = new ToDoList();
         myList.fileRead(autoSave);
-        itemNameImportList = new ArrayList<>();
-        itemNameImportList = myList.convertItemListToStringList(myList);
-    }
 
-    public ArrayList<String> getImports() {
-        return itemNameImportList;
-    }
-
-        /*System.out.println("[1] Add an Item");
+        System.out.println("[1] Add an Item");
         System.out.println("[2] Remove an Item");
         System.out.println("[3] Show All Items");
         System.out.println("[4] Show All Urgent Items");
@@ -67,10 +60,10 @@ public class Main {
                 System.out.println("Exiting...");
                 break;
             }
-        }*/
+        }
     }
 
-    /*public void option1() {
+    public void option1() {
         System.out.println("Select Item Type: [1] Regular [2] Urgent");
         scanner.nextLine();
         itemType = scanner.nextLine();
@@ -130,7 +123,7 @@ public class Main {
         }
         System.out.println(newLine);
     }
-}*/
+}
 
 // TODO: Implement overridden getName() in ItemUrgent
 // TODO: Refactor option4() & option5() to move ToDoList related methods out of Main
