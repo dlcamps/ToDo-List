@@ -140,9 +140,10 @@ public class GUI extends JPanel implements ListSelectionListener {
         add(buttonPane, BorderLayout.PAGE_END);
 
     }
+
     class QuitListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            return;
+            System.exit(0);
         }
     }
 
