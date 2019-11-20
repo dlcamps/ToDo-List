@@ -31,6 +31,7 @@
 
 package ui;
 
+import model.ItemRegular;
 import model.ToDoList;
 import model.exceptions.RemoveOnEmptyListException;
 import model.observer.AutoSave;
@@ -43,7 +44,7 @@ import java.util.Observer;
 import javax.swing.*;
 import javax.swing.event.*;
 
-// TODO: Add 'Quit' button that closes the program
+// TODO: Save list each time an item is added or removed (in sync w/ ToDoList)
 // TODO: Add 'Regular' and 'Urgent' toggle button to select item type
 
 public class GUI extends JPanel implements ListSelectionListener {
@@ -154,6 +155,7 @@ public class GUI extends JPanel implements ListSelectionListener {
             //so go ahead and remove whatever's selected.
             int index = list.getSelectedIndex();
             listModel.remove(index);
+            myList.removeWithIndex(index);
 
             int size = listModel.getSize();
 
@@ -192,7 +194,6 @@ public class GUI extends JPanel implements ListSelectionListener {
                 itemName.selectAll();
                 return;
             }
-
             int index = list.getSelectedIndex(); //get selected index
             if (index == -1) { //no selection, so insert at beginning
                 index = 0;
@@ -203,6 +204,7 @@ public class GUI extends JPanel implements ListSelectionListener {
             listModel.insertElementAt(itemName.getText(), index);
             //If we just wanted to add to the end, we'd do this:
             //listModel.addElement(itemName.getText());
+            myList.createItem(1, itemName.getText());
 
             //Reset the text field.
             itemName.requestFocusInWindow();

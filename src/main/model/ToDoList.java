@@ -62,6 +62,18 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
         notifyObservers();
     }
 
+    public void createItem(Integer i, String s) {
+        if (i == 1) {
+            ItemRegular itemRegularToAdd = new ItemRegular();
+            itemRegularToAdd.setName(s);
+            list.add(itemRegularToAdd);
+        } else if (i == 2) {
+            ItemUrgent itemUrgentToAdd = new ItemUrgent();
+            itemUrgentToAdd.setName(s);
+            list.add(itemUrgentToAdd);
+        }
+    }
+
     public void removeWithString(String s) {
         itemListPosition = Integer.parseInt(s);
         itemToBeRemoved = list.get(itemListPosition - 1);
@@ -71,6 +83,12 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
         } else {
             itemLocations.remove(itemToBeRemoved.getName());
         }
+        setChanged();
+        notifyObservers();
+    }
+
+    public void removeWithIndex(int i) {
+        list.remove(i);
         setChanged();
         notifyObservers();
     }
