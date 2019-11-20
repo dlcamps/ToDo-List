@@ -31,7 +31,6 @@
 
 package ui;
 
-import model.ItemRegular;
 import model.ToDoList;
 import model.exceptions.RemoveOnEmptyListException;
 import model.observer.AutoSave;
@@ -45,6 +44,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 // TODO: Add selection to show full ToDoList or just urgent items
+// TODO: Highlight urgent items to replace "[!!!]" tag
 
 public class GUI extends JPanel implements ListSelectionListener {
     private JList list;
@@ -66,6 +66,9 @@ public class GUI extends JPanel implements ListSelectionListener {
     private JButton quitButton;
     private JRadioButton regularButton;
     private JRadioButton urgentButton;
+    private Integer borderSideSize = 30;
+    private Integer fontSize = 16;
+    private Font myFont = new Font("Lucidia Grande", Font.PLAIN, fontSize);
 
     public GUI() throws IOException {
         super(new BorderLayout());
@@ -94,6 +97,8 @@ public class GUI extends JPanel implements ListSelectionListener {
         list.addListSelectionListener(this);
         list.setVisibleRowCount(5);
         JScrollPane listScrollPane = new JScrollPane(list);
+        setBorder(BorderFactory.createEmptyBorder(borderSideSize, borderSideSize, borderSideSize, borderSideSize));
+        list.setFont(myFont);
 
         JButton addButton = new JButton(addString);
         AddListener addListener = new AddListener(addButton);
@@ -109,24 +114,17 @@ public class GUI extends JPanel implements ListSelectionListener {
         quitButton.addActionListener(new QuitListener());
 
         regularButton = new JRadioButton(regularString);
-        regularButton.setMnemonic(KeyEvent.VK_B);
-        regularButton.setActionCommand(regularString);
         regularButton.setSelected(true);
 
         urgentButton = new JRadioButton(urgentString);
-        urgentButton.setMnemonic(KeyEvent.VK_B);
-        urgentButton.setActionCommand(urgentString);
         urgentButton.setSelected(false);
         ButtonGroup group = new ButtonGroup();
         group.add(regularButton);
         group.add(urgentButton);
-        regularButton.addActionListener(addListener);
-        urgentButton.addActionListener(addListener);
         JPanel radioPanel = new JPanel(new GridLayout(0, 1));
         radioPanel.add(regularButton);
         radioPanel.add(urgentButton);
         add(radioPanel, BorderLayout.LINE_START);
-        setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 
         itemName = new JTextField(numberOfColumns);
         itemName.addActionListener(addListener);
