@@ -284,7 +284,7 @@ public class GUI extends JPanel implements ListSelectionListener {
         frame.setContentPane(newContentPane);
 
         //Display the window.
-        frame.pack();
+        frame.setSize(600, 500);
         frame.setVisible(true);
     }
 
