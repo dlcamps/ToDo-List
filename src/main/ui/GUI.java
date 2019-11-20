@@ -44,7 +44,6 @@ import java.util.Observer;
 import javax.swing.*;
 import javax.swing.event.*;
 
-// TODO: Save list each time an item is added or removed (in sync w/ ToDoList)
 // TODO: Add 'Regular' and 'Urgent' toggle button to select item type
 
 public class GUI extends JPanel implements ListSelectionListener {
