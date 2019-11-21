@@ -56,6 +56,7 @@ public class GUI extends JPanel implements ListSelectionListener {
     private JTextField itemName;
 
     private DefaultListModel listUrgentModel;
+    private JList listUrgent;
     private Integer numberOfColumns = 15;
     private ArrayList<String> itemNameImportList;
     private Observer autoSave;
@@ -105,6 +106,14 @@ public class GUI extends JPanel implements ListSelectionListener {
         JScrollPane listScrollPane = new JScrollPane(list);
         setBorder(BorderFactory.createEmptyBorder(borderSideSize, borderSideSize, borderSideSize, borderSideSize));
         list.setFont(myFont);
+
+        listUrgent = new JList(listUrgentModel);
+        listUrgent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        listUrgent.setSelectedIndex(0);
+        listUrgent.addListSelectionListener(this);
+        listUrgent.setVisibleRowCount(5);
+        JScrollPane listUrgentScrollPane = new JScrollPane(listUrgent);
+        listUrgent.setFont(urgentFont);
 
         listList = new JComboBox(listStrings);
         listList.setSelectedIndex(0);
@@ -179,9 +188,29 @@ public class GUI extends JPanel implements ListSelectionListener {
 
     }
 
+    public void updateList(String s) {
+        if (s.equals("All")) {
+            removeButton.setEnabled(true);
+            addButton.setEnabled(true);
+            regularButton.setEnabled(true);
+            urgentButton.setEnabled(true);
+            itemName.setEnabled(true);
+            itemName.setBackground(Color.white);
+        } else if (s.equals("Urgent")) {
+            removeButton.setEnabled(false);
+            addButton.setEnabled(false);
+            regularButton.setEnabled(false);
+            urgentButton.setEnabled(false);
+            itemName.setEnabled(false);
+            itemName.setBackground(Color.lightGray);
+        }
+    }
+
     class ListListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            //
+            JComboBox cb = (JComboBox)e.getSource();
+            String listName = (String)cb.getSelectedItem();
+            updateList(listName);
         }
     }
 
@@ -232,6 +261,7 @@ public class GUI extends JPanel implements ListSelectionListener {
                 myList.createItem(1, s);
             } else if (b == false) {
                 listModel.insertElementAt("[!!!] " + s, i);
+                listUrgentModel.insertElementAt(s, i);
                 myList.createItem(2, s);
             }
         }
