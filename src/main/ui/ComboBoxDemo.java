@@ -36,96 +36,67 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /*
- * RadioButtonDemo.java requires these files:
+ * ComboBoxDemo.java uses these additional files:
  *   images/Bird.gif
  *   images/Cat.gif
  *   images/Dog.gif
  *   images/Rabbit.gif
  *   images/Pig.gif
  */
-public class RadioButtonDemo extends JPanel implements ActionListener {
-    static String birdString = "Bird";
-    static String catString = "Cat";
-    static String dogString = "Dog";
-    static String rabbitString = "Rabbit";
-    static String pigString = "Pig";
-
+public class ComboBoxDemo extends JPanel
+        implements ActionListener {
     JLabel picture;
 
-    public RadioButtonDemo() {
+    public ComboBoxDemo() {
         super(new BorderLayout());
 
-        //Create the radio buttons.
-        JRadioButton birdButton = new JRadioButton(birdString);
-        birdButton.setMnemonic(KeyEvent.VK_B);
-        birdButton.setActionCommand(birdString);
-        birdButton.setSelected(true);
+        String[] petStrings = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
 
-        JRadioButton catButton = new JRadioButton(catString);
-        catButton.setMnemonic(KeyEvent.VK_C);
-        catButton.setActionCommand(catString);
+        //Create the combo box, select the item at index 4.
+        //Indices start at 0, so 4 specifies the pig.
+        JComboBox petList = new JComboBox(petStrings);
+        petList.setSelectedIndex(4);
+        petList.addActionListener(this);
 
-        JRadioButton dogButton = new JRadioButton(dogString);
-        dogButton.setMnemonic(KeyEvent.VK_D);
-        dogButton.setActionCommand(dogString);
-
-        JRadioButton rabbitButton = new JRadioButton(rabbitString);
-        rabbitButton.setMnemonic(KeyEvent.VK_R);
-        rabbitButton.setActionCommand(rabbitString);
-
-        JRadioButton pigButton = new JRadioButton(pigString);
-        pigButton.setMnemonic(KeyEvent.VK_P);
-        pigButton.setActionCommand(pigString);
-
-        //Group the radio buttons.
-        ButtonGroup group = new ButtonGroup();
-        group.add(birdButton);
-        group.add(catButton);
-        group.add(dogButton);
-        group.add(rabbitButton);
-        group.add(pigButton);
-
-        //Register a listener for the radio buttons.
-        birdButton.addActionListener(this);
-        catButton.addActionListener(this);
-        dogButton.addActionListener(this);
-        rabbitButton.addActionListener(this);
-        pigButton.addActionListener(this);
-
-        //Set up the picture label.
-        picture = new JLabel(createImageIcon("images/"
-                + birdString
-                + ".gif"));
+        //Set up the picture.
+        picture = new JLabel();
+        picture.setFont(picture.getFont().deriveFont(Font.ITALIC));
+        picture.setHorizontalAlignment(JLabel.CENTER);
+        updateLabel(petStrings[petList.getSelectedIndex()]);
+        picture.setBorder(BorderFactory.createEmptyBorder(10,0,0,0));
 
         //The preferred size is hard-coded to be the width of the
-        //widest image and the height of the tallest image.
+        //widest image and the height of the tallest image + the border.
         //A real program would compute this.
-        picture.setPreferredSize(new Dimension(177, 122));
+        picture.setPreferredSize(new Dimension(177, 122+10));
 
-
-        //Put the radio buttons in a column in a panel.
-        JPanel radioPanel = new JPanel(new GridLayout(0, 1));
-        radioPanel.add(birdButton);
-        radioPanel.add(catButton);
-        radioPanel.add(dogButton);
-        radioPanel.add(rabbitButton);
-        radioPanel.add(pigButton);
-
-        add(radioPanel, BorderLayout.LINE_START);
-        add(picture, BorderLayout.CENTER);
+        //Lay out the demo.
+        add(petList, BorderLayout.PAGE_START);
+        add(picture, BorderLayout.PAGE_END);
         setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
     }
 
-    /** Listens to the radio buttons. */
+    /** Listens to the combo box. */
     public void actionPerformed(ActionEvent e) {
-        picture.setIcon(createImageIcon("images/"
-                + e.getActionCommand()
-                + ".gif"));
+        JComboBox cb = (JComboBox)e.getSource();
+        String petName = (String)cb.getSelectedItem();
+        updateLabel(petName);
+    }
+
+    protected void updateLabel(String name) {
+        ImageIcon icon = createImageIcon("images/" + name + ".gif");
+        picture.setIcon(icon);
+        picture.setToolTipText("A drawing of a " + name.toLowerCase());
+        if (icon != null) {
+            picture.setText(null);
+        } else {
+            picture.setText("Image not found");
+        }
     }
 
     /** Returns an ImageIcon, or null if the path was invalid. */
     protected static ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = RadioButtonDemo.class.getResource(path);
+        java.net.URL imgURL = ComboBoxDemo.class.getResource(path);
         if (imgURL != null) {
             return new ImageIcon(imgURL);
         } else {
@@ -141,11 +112,11 @@ public class RadioButtonDemo extends JPanel implements ActionListener {
      */
     private static void createAndShowGUI() {
         //Create and set up the window.
-        JFrame frame = new JFrame("RadioButtonDemo");
+        JFrame frame = new JFrame("ComboBoxDemo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Create and set up the content pane.
-        JComponent newContentPane = new RadioButtonDemo();
+        JComponent newContentPane = new ComboBoxDemo();
         newContentPane.setOpaque(true); //content panes must be opaque
         frame.setContentPane(newContentPane);
 

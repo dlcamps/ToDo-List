@@ -55,25 +55,31 @@ public class GUI extends JPanel implements ListSelectionListener {
     private JButton removeButton;
     private JTextField itemName;
 
+    private DefaultListModel listUrgentModel;
     private Integer numberOfColumns = 15;
     private ArrayList<String> itemNameImportList;
     private Observer autoSave;
     private ToDoList myList;
     private Boolean startFromScratch;
+    String[] listStrings = { "All", "Urgent" };
     private static final String quitString = "Quit";
     private static final String regularString = "Regular";
     private static final String urgentString = "Urgent";
+    private JComboBox listList;
+    private JButton addButton;
     private JButton quitButton;
     private JRadioButton regularButton;
     private JRadioButton urgentButton;
     private Integer borderSideSize = 30;
     private Integer fontSize = 16;
     private Font myFont = new Font("Lucidia Grande", Font.PLAIN, fontSize);
+    private Font urgentFont = new Font("Lucidie Grande", Font.BOLD, fontSize);
 
     public GUI() throws IOException {
         super(new BorderLayout());
 
         listModel = new DefaultListModel();
+        listUrgentModel = new DefaultListModel();
 
         autoSave = new AutoSave();
         myList = new ToDoList();
@@ -100,7 +106,11 @@ public class GUI extends JPanel implements ListSelectionListener {
         setBorder(BorderFactory.createEmptyBorder(borderSideSize, borderSideSize, borderSideSize, borderSideSize));
         list.setFont(myFont);
 
-        JButton addButton = new JButton(addString);
+        listList = new JComboBox(listStrings);
+        listList.setSelectedIndex(0);
+        listList.addActionListener(new ListListener());
+
+        addButton = new JButton(addString);
         AddListener addListener = new AddListener(addButton);
         addButton.setActionCommand(addString);
         addButton.addActionListener(addListener);
@@ -163,9 +173,16 @@ public class GUI extends JPanel implements ListSelectionListener {
         buttonPane.add(quitButton);
         buttonPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
+        add(listList, BorderLayout.PAGE_START);
         add(listScrollPane, BorderLayout.CENTER);
         add(buttonPane, BorderLayout.PAGE_END);
 
+    }
+
+    class ListListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            //
+        }
     }
 
     class QuitListener implements ActionListener {
@@ -209,6 +226,16 @@ public class GUI extends JPanel implements ListSelectionListener {
             this.button = button;
         }
 
+        public void addToAll(Boolean b, String s, Integer i) {
+            if (b == true) {
+                listModel.insertElementAt(s, i);
+                myList.createItem(1, s);
+            } else if (b == false) {
+                listModel.insertElementAt("[!!!] " + s, i);
+                myList.createItem(2, s);
+            }
+        }
+
         //Required by ActionListener.
         public void actionPerformed(ActionEvent e) {
             String name = itemName.getText();
@@ -229,13 +256,7 @@ public class GUI extends JPanel implements ListSelectionListener {
 
             //If we just wanted to add to the end, we'd do this:
             //listModel.addElement(itemName.getText());
-            if (regularButton.isSelected() == true) {
-                listModel.insertElementAt(itemName.getText(), index);
-                myList.createItem(1, itemName.getText());
-            } else if (urgentButton.isSelected() == true) {
-                listModel.insertElementAt("[!!!] " + itemName.getText(), index);
-                myList.createItem(2, itemName.getText());
-            }
+            addToAll(regularButton.isSelected(), itemName.getText(), index);
 
             //Reset the text field.
             itemName.requestFocusInWindow();
