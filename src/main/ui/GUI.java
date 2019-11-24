@@ -50,31 +50,31 @@ import javax.swing.event.*;
 
 public class GUI extends JPanel implements ListSelectionListener {
     private JList list;
+    private JList listUrgent;
     private DefaultListModel listModel;
+    private DefaultListModel listUrgentModel;
 
+    private JComboBox listComboBox;
+    private JScrollPane listScrollPane;
+    private JScrollPane listUrgentScrollPane;
+    private JButton addButton;
+    private JButton removeButton;
+    private JRadioButton regularButton;
+    private JRadioButton urgentButton;
+    private JTextField itemName;
+    private JButton quitButton;
+    private String[] listStrings = { "All", "Urgent" };
     private static final String addString = "Add";
     private static final String removeString = "Remove";
-    private JButton removeButton;
-    private JTextField itemName;
+    private static final String regularString = "Regular";
+    private static final String urgentString = "Urgent";
+    private static final String quitString = "Quit";
 
-    private DefaultListModel listUrgentModel;
-    private JList listUrgent;
-    private Integer numberOfColumns = 15;
     private ArrayList<String> itemNameImportList;
     private Observer autoSave;
     private ToDoList myList;
     private Boolean startFromScratch;
-    String[] listStrings = { "All", "Urgent" };
-    private static final String quitString = "Quit";
-    private static final String regularString = "Regular";
-    private static final String urgentString = "Urgent";
-    private JScrollPane listScrollPane;
-    private JScrollPane listUrgentScrollPane;
-    private JComboBox listComboBox;
-    private JButton addButton;
-    private JButton quitButton;
-    private JRadioButton regularButton;
-    private JRadioButton urgentButton;
+    private Integer numberOfColumns = 15;
     private Integer borderSideSize = 30;
     private Integer fontSize = 16;
     private Font myFont = new Font("Lucidia Grande", Font.PLAIN, fontSize);
@@ -95,7 +95,7 @@ public class GUI extends JPanel implements ListSelectionListener {
             itemNameImportList = myList.convertItemListToStringList(myList);
             for (String s : itemNameImportList) {
                 listModel.addElement(s);
-                if (s.substring(0,6).equals("[!!!] ")) {
+                if (s.substring(0,5).equals("[!!!]")) {
                     listUrgentModel.addElement(s.substring(6));
                 }
             }
@@ -262,13 +262,13 @@ public class GUI extends JPanel implements ListSelectionListener {
             this.button = button;
         }
 
-        public void addToAll(Boolean b, String s, Integer i) {
+        public void addToLists(Boolean b, String s, Integer i) {
             if (b == true) {
                 listModel.insertElementAt(s, i);
                 myList.createItem(1, s);
             } else if (b == false) {
                 listModel.insertElementAt("[!!!] " + s, i);
-                listUrgentModel.insertElementAt(s, i);
+                listUrgentModel.insertElementAt("[!!!] " + s, i);
                 myList.createItem(2, s);
             }
         }
@@ -293,7 +293,7 @@ public class GUI extends JPanel implements ListSelectionListener {
 
             //If we just wanted to add to the end, we'd do this:
             //listModel.addElement(itemName.getText());
-            addToAll(regularButton.isSelected(), itemName.getText(), index);
+            addToLists(regularButton.isSelected(), itemName.getText(), index);
 
             //Reset the text field.
             itemName.requestFocusInWindow();
