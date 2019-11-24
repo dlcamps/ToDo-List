@@ -11,6 +11,9 @@ import network.ReadWebPage;
 import java.io.IOException;
 import java.util.*;
 
+// TODO: Implement overridden getName() in ItemUrgent
+// TODO: Refactor option4() & option5() to move ToDoList related methods out of Main
+
 public class Main {
     ToDoList myList;
     Integer itemLine;
@@ -124,6 +127,3 @@ public class Main {
         System.out.println(newLine);
     }
 }
-
-// TODO: Implement overridden getName() in ItemUrgent
-// TODO: Refactor option4() & option5() to move ToDoList related methods out of Main

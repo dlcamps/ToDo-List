@@ -43,7 +43,9 @@ import java.util.Observer;
 import javax.swing.*;
 import javax.swing.event.*;
 
-// TODO: Add selection to show full ToDoList or just urgent items
+// TODO: Resetting text field when adding an urgent item
+// TODO: Removing urgent items from listUrgentModel when RemoveListener is called
+// TODO: Fix 'Remove' button being enabled on urgent item selection (maybe disable selection)
 // TODO: Highlight urgent items to replace "[!!!]" tag
 
 public class GUI extends JPanel implements ListSelectionListener {
@@ -66,7 +68,9 @@ public class GUI extends JPanel implements ListSelectionListener {
     private static final String quitString = "Quit";
     private static final String regularString = "Regular";
     private static final String urgentString = "Urgent";
-    private JComboBox listList;
+    private JScrollPane listScrollPane;
+    private JScrollPane listUrgentScrollPane;
+    private JComboBox listComboBox;
     private JButton addButton;
     private JButton quitButton;
     private JRadioButton regularButton;
@@ -91,33 +95,35 @@ public class GUI extends JPanel implements ListSelectionListener {
             itemNameImportList = myList.convertItemListToStringList(myList);
             for (String s : itemNameImportList) {
                 listModel.addElement(s);
+                if (s.substring(0,6).equals("[!!!] ")) {
+                    listUrgentModel.addElement(s.substring(6));
+                }
             }
         } else if (myList.getList().isEmpty()) {
             startFromScratch = true;
             listModel.addElement("Insert Item Here");
         }
 
-        //Create the list and put it in a scroll pane.
         list = new JList(listModel);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setSelectedIndex(0);
         list.addListSelectionListener(this);
         list.setVisibleRowCount(5);
-        JScrollPane listScrollPane = new JScrollPane(list);
-        setBorder(BorderFactory.createEmptyBorder(borderSideSize, borderSideSize, borderSideSize, borderSideSize));
+        listScrollPane = new JScrollPane(list);
         list.setFont(myFont);
+        setBorder(BorderFactory.createEmptyBorder(borderSideSize, borderSideSize, borderSideSize, borderSideSize));
 
         listUrgent = new JList(listUrgentModel);
         listUrgent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listUrgent.setSelectedIndex(0);
         listUrgent.addListSelectionListener(this);
         listUrgent.setVisibleRowCount(5);
-        JScrollPane listUrgentScrollPane = new JScrollPane(listUrgent);
+        listUrgentScrollPane = new JScrollPane(listUrgent);
         listUrgent.setFont(urgentFont);
 
-        listList = new JComboBox(listStrings);
-        listList.setSelectedIndex(0);
-        listList.addActionListener(new ListListener());
+        listComboBox = new JComboBox(listStrings);
+        listComboBox.setSelectedIndex(0);
+        listComboBox.addActionListener(new ListListener());
 
         addButton = new JButton(addString);
         AddListener addListener = new AddListener(addButton);
@@ -137,19 +143,16 @@ public class GUI extends JPanel implements ListSelectionListener {
 
         urgentButton = new JRadioButton(urgentString);
         urgentButton.setSelected(false);
+
         ButtonGroup group = new ButtonGroup();
         group.add(regularButton);
         group.add(urgentButton);
+
         JPanel radioPanel = new JPanel(new GridLayout(0, 1));
         radioPanel.add(regularButton);
         radioPanel.add(urgentButton);
-        add(radioPanel, BorderLayout.LINE_START);
 
-        itemName = new JTextField(numberOfColumns);
-        itemName.addActionListener(addListener);
-        itemName.getDocument().addDocumentListener(addListener);
-        String name = listModel.getElementAt(list.getSelectedIndex()).toString();
-
+        // If the list opens empty, the user can't remove items
         if (startFromScratch) {
             addButton.setEnabled(true);
             removeButton.setEnabled(false);
@@ -159,7 +162,11 @@ public class GUI extends JPanel implements ListSelectionListener {
             removeButton.setEnabled(true);
         }
 
-        //Create a panel that uses BoxLayout.
+        itemName = new JTextField(numberOfColumns);
+        itemName.addActionListener(addListener);
+        itemName.getDocument().addDocumentListener(addListener);
+        // String name = listModel.getElementAt(list.getSelectedIndex()).toString();
+
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
         buttonPane.add(removeButton);
@@ -182,10 +189,10 @@ public class GUI extends JPanel implements ListSelectionListener {
         buttonPane.add(quitButton);
         buttonPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
-        add(listList, BorderLayout.PAGE_START);
+        add(listComboBox, BorderLayout.PAGE_START);
         add(listScrollPane, BorderLayout.CENTER);
+        add(radioPanel, BorderLayout.LINE_START);
         add(buttonPane, BorderLayout.PAGE_END);
-
     }
 
     public void updateList(String s) {
