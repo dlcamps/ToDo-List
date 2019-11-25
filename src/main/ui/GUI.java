@@ -31,6 +31,7 @@
 
 package ui;
 
+import model.Item;
 import model.ToDoList;
 import model.exceptions.RemoveOnEmptyListException;
 import model.observer.AutoSave;
@@ -195,9 +196,10 @@ public class GUI extends JPanel implements ListSelectionListener {
     public void updateList(String s) {
         if (s.equals("All")) {
             swapAndRefresh(listUrgentScrollPane, listScrollPane);
+            controlsVisible(true);
         } else if (s.equals("Urgent")) {
             swapAndRefresh(listScrollPane, listUrgentScrollPane);
-            controlsAccess(false);
+            controlsVisible(false);
         }
     }
 
@@ -207,7 +209,7 @@ public class GUI extends JPanel implements ListSelectionListener {
         this.updateUI();
     }
 
-    public void controlsAccess(Boolean b) {
+    public void controlsVisible(Boolean b) {
         removeButton.setEnabled(b);
         addButton.setEnabled(b);
         regularButton.setEnabled(b);
@@ -252,8 +254,7 @@ public class GUI extends JPanel implements ListSelectionListener {
                 index++;
             }
 
-            //listModel.addElement(itemName.getText());
-            addToLists(regularButton.isSelected(), index, itemName.getText());
+            addToLists(regularButton.isSelected(), itemName.getText());
 
             itemName.requestFocusInWindow();
             itemName.setText("");
@@ -262,13 +263,13 @@ public class GUI extends JPanel implements ListSelectionListener {
             list.ensureIndexIsVisible(index);
         }
 
-        public void addToLists(Boolean regular, Integer position, String name) {
+        public void addToLists(Boolean regular, String name) {
             if (regular == true) {
-                listModel.insertElementAt(name, position);
+                listModel.addElement(name);
                 myList.createItem(1, name);
             } else if (regular == false) {
-                listModel.insertElementAt("[!!!] " + name, position);
-                listUrgentModel.insertElementAt(name, position);
+                listModel.addElement("[!!!] " + name);
+                listUrgentModel.addElement(name);
                 myList.createItem(2, name);
             }
         }
@@ -312,8 +313,13 @@ public class GUI extends JPanel implements ListSelectionListener {
         public void actionPerformed(ActionEvent e) {
             int index = list.getSelectedIndex();
             listModel.remove(index);
+            if (index >= 0) {
+                String s = getStringAtIndex(index);
+                if ((s.length() >= 5) && (s.substring(0, 5).equals("[!!!]"))) {
+                    listUrgentModel.removeElement(s);
+                }
+            }
             myList.removeWithIndex(index);
-
             int size = listModel.getSize();
 
             if (size == 0) { //No items left, disable removing.
@@ -329,6 +335,12 @@ public class GUI extends JPanel implements ListSelectionListener {
                 list.ensureIndexIsVisible(index);
             }
         }
+    }
+
+    public String getStringAtIndex(Integer position) {
+        Item i = myList.getItem(position);
+        String name = i.getName();
+        return name;
     }
 
     class QuitListener implements ActionListener {
