@@ -196,10 +196,10 @@ public class GUI extends JPanel implements ListSelectionListener {
     public void updateList(String s) {
         if (s.equals("All")) {
             swapAndRefresh(listUrgentScrollPane, listScrollPane);
-            controlsVisible(true);
+            controlsAccessible(true);
         } else if (s.equals("Urgent")) {
             swapAndRefresh(listScrollPane, listUrgentScrollPane);
-            controlsVisible(false);
+            controlsAccessible(false);
         }
     }
 
@@ -209,7 +209,7 @@ public class GUI extends JPanel implements ListSelectionListener {
         this.updateUI();
     }
 
-    public void controlsVisible(Boolean b) {
+    public void controlsAccessible(Boolean b) {
         removeButton.setEnabled(b);
         addButton.setEnabled(b);
         regularButton.setEnabled(b);
@@ -222,8 +222,8 @@ public class GUI extends JPanel implements ListSelectionListener {
         }
     }
 
-    class ListListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
+    class ListListener extends BaseListener implements ActionListener {
+        public void doPerformAction(ActionEvent e) {
             JComboBox cb = (JComboBox)e.getSource();
             String listName = (String)cb.getSelectedItem();
             updateList(listName);
@@ -316,7 +316,7 @@ public class GUI extends JPanel implements ListSelectionListener {
             if (index >= 0) {
                 String s = getStringAtIndex(index);
                 if ((s.length() >= 5) && (s.substring(0, 5).equals("[!!!]"))) {
-                    listUrgentModel.removeElement(s);
+                    listUrgentModel.removeElement(s.substring(6));
                 }
             }
             myList.removeWithIndex(index);
