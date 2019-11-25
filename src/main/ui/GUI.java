@@ -45,7 +45,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public class GUI extends JPanel implements ListSelectionListener {
-    public GUI gui;
     private JList list;
     private JList listUrgent;
     private DefaultListModel listModel;
@@ -113,8 +112,6 @@ public class GUI extends JPanel implements ListSelectionListener {
 
         listUrgent = new JList(listUrgentModel);
         listUrgent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        listUrgent.setSelectedIndex(0);
-        listUrgent.addListSelectionListener(this);
         listUrgent.setVisibleRowCount(5);
         listUrgentScrollPane = new JScrollPane(listUrgent);
         listUrgent.setFont(urgentFont);
@@ -158,7 +155,6 @@ public class GUI extends JPanel implements ListSelectionListener {
         itemName = new JTextField(numberOfColumns);
         itemName.addActionListener(addListener);
         itemName.getDocument().addDocumentListener(addListener);
-//        String name = listModel.getElementAt(list.getSelectedIndex()).toString();
 
         quitButton = new JButton(quitString);
         quitButton.setActionCommand(quitString);
