@@ -218,8 +218,8 @@ public class GUI extends JPanel implements ListSelectionListener {
         }
     }
 
-    class ListListener extends BaseListener implements ActionListener {
-        public void doPerformAction(ActionEvent e) {
+    class ListListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
             JComboBox cb = (JComboBox)e.getSource();
             String listName = (String)cb.getSelectedItem();
             updateList(listName);
@@ -255,7 +255,7 @@ public class GUI extends JPanel implements ListSelectionListener {
             itemName.requestFocusInWindow();
             itemName.setText("");
 
-            list.setSelectedIndex(index);
+            list.setSelectedIndex(listModel.getSize()-1);
             list.ensureIndexIsVisible(index);
         }
 
