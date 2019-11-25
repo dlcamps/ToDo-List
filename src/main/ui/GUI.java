@@ -191,24 +191,28 @@ public class GUI extends JPanel implements ListSelectionListener {
 
     public void updateList(String s) {
         if (s.equals("All")) {
-            this.remove(listUrgentScrollPane);
-            this.add(listScrollPane);
-            this.updateUI();
-            removeButton.setEnabled(true);
-            addButton.setEnabled(true);
-            regularButton.setEnabled(true);
-            urgentButton.setEnabled(true);
-            itemName.setEnabled(true);
-            itemName.setBackground(Color.white);
+            swapAndRefresh(listUrgentScrollPane, listScrollPane);
         } else if (s.equals("Urgent")) {
-            this.remove(listScrollPane);
-            this.add(listUrgentScrollPane, BorderLayout.CENTER);
-            this.updateUI();
-            removeButton.setEnabled(false);
-            addButton.setEnabled(false);
-            regularButton.setEnabled(false);
-            urgentButton.setEnabled(false);
-            itemName.setEnabled(false);
+            swapAndRefresh(listScrollPane, listUrgentScrollPane);
+            controlsAccess(false);
+        }
+    }
+
+    public void swapAndRefresh(JScrollPane out, JScrollPane in) {
+        this.remove(out);
+        this.add(in, BorderLayout.CENTER);
+        this.updateUI();
+    }
+
+    public void controlsAccess(Boolean b) {
+        removeButton.setEnabled(b);
+        addButton.setEnabled(b);
+        regularButton.setEnabled(b);
+        urgentButton.setEnabled(b);
+        itemName.setEnabled(b);
+        if (b == true) {
+            itemName.setBackground(Color.white);
+        } else if (b == false) {
             itemName.setBackground(Color.lightGray);
         }
     }
