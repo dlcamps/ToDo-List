@@ -45,35 +45,42 @@ import javax.swing.event.*;
 
 public class GUI extends JPanel implements ListSelectionListener {
     private JList list;
+    private JList listUrgent;
     private DefaultListModel listModel;
+    private DefaultListModel listUrgentModel;
+    private JComboBox listComboBox;
     private JScrollPane listScrollPane;
+    private JScrollPane listUrgentScrollPane;
     private JButton addButton;
     private JButton removeButton;
     private JRadioButton regularButton;
     private JRadioButton urgentButton;
+    private JTextField itemName;
     private JButton quitButton;
 
+    private String[] listStrings = { "All", "Urgent" };
     private static final String addString = "Add";
     private static final String removeString = "Remove";
-    private JTextField itemName;
+    private static final String regularString = "Regular";
+    private static final String urgentString = "Urgent";
+    private static final String quitString = "Quit";
 
     private ArrayList<String> itemNameImportList;
     private Observer autoSave;
     private ToDoList myList;
     private Boolean startFromScratch;
-    private static final String quitString = "Quit";
-    private static final String regularString = "Regular";
-    private static final String urgentString = "Urgent";
 
     private Integer numberOfColumns = 15;
     private Integer borderSideSize = 30;
     private Integer fontSize = 16;
     private Font myFont = new Font("Lucidia Grande", Font.PLAIN, fontSize);
+    private Font urgentFont = new Font("Lucidie Grande", Font.BOLD, fontSize);
 
     public GUI() throws IOException {
         super(new BorderLayout());
 
         listModel = new DefaultListModel();
+        listUrgentModel = new DefaultListModel();
 
         autoSave = new AutoSave();
         myList = new ToDoList();
@@ -99,6 +106,18 @@ public class GUI extends JPanel implements ListSelectionListener {
         list.setFont(myFont);
         setBorder(BorderFactory.createEmptyBorder(borderSideSize, borderSideSize, borderSideSize, borderSideSize));
 
+        listUrgent = new JList(listUrgentModel);
+        listUrgent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        listUrgent.setSelectedIndex(0);
+        listUrgent.addListSelectionListener(this);
+        listUrgent.setVisibleRowCount(5);
+        listUrgentScrollPane = new JScrollPane(listUrgent);
+        listUrgent.setFont(urgentFont);
+
+        listComboBox = new JComboBox(listStrings);
+        listComboBox.setSelectedIndex(0);
+        listComboBox.addActionListener(new ListListener());
+
         addButton = new JButton(addString);
         AddListener addListener = new AddListener(addButton);
         addButton.setActionCommand(addString);
@@ -122,15 +141,6 @@ public class GUI extends JPanel implements ListSelectionListener {
         radioPanel.add(regularButton);
         radioPanel.add(urgentButton);
 
-        itemName = new JTextField(numberOfColumns);
-        itemName.addActionListener(addListener);
-        itemName.getDocument().addDocumentListener(addListener);
-//        String name = listModel.getElementAt(list.getSelectedIndex()).toString();
-
-        quitButton = new JButton(quitString);
-        quitButton.setActionCommand(quitString);
-        quitButton.addActionListener(new QuitListener());
-
         if (startFromScratch) {
             addButton.setEnabled(true);
             removeButton.setEnabled(false);
@@ -139,6 +149,15 @@ public class GUI extends JPanel implements ListSelectionListener {
             addButton.setEnabled(false);
             removeButton.setEnabled(true);
         }
+
+        itemName = new JTextField(numberOfColumns);
+        itemName.addActionListener(addListener);
+        itemName.getDocument().addDocumentListener(addListener);
+//        String name = listModel.getElementAt(list.getSelectedIndex()).toString();
+
+        quitButton = new JButton(quitString);
+        quitButton.setActionCommand(quitString);
+        quitButton.addActionListener(new QuitListener());
 
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
@@ -162,38 +181,18 @@ public class GUI extends JPanel implements ListSelectionListener {
         buttonPane.add(quitButton);
         buttonPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
+        add(listComboBox, BorderLayout.PAGE_START);
         add(listScrollPane, BorderLayout.CENTER);
         add(buttonPane, BorderLayout.PAGE_END);
         add(radioPanel, BorderLayout.LINE_START);
 
     }
 
-    class QuitListener implements ActionListener {
+    class ListListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            System.exit(0);
-        }
-    }
-
-    class RemoveListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            int index = list.getSelectedIndex();
-            listModel.remove(index);
-            myList.removeWithIndex(index);
-
-            int size = listModel.getSize();
-
-            if (size == 0) { //No items left, disable removing.
-                removeButton.setEnabled(false);
-
-            } else { //Select an index.
-                if (index == listModel.getSize()) {
-                    //removed item in last position
-                    index--;
-                }
-
-                list.setSelectedIndex(index);
-                list.ensureIndexIsVisible(index);
-            }
+            JComboBox cb = (JComboBox)e.getSource();
+            String listName = (String)cb.getSelectedItem();
+//            updateList(listName);
         }
     }
 
@@ -272,6 +271,36 @@ public class GUI extends JPanel implements ListSelectionListener {
                 return true;
             }
             return false;
+        }
+    }
+
+
+    class RemoveListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            int index = list.getSelectedIndex();
+            listModel.remove(index);
+            myList.removeWithIndex(index);
+
+            int size = listModel.getSize();
+
+            if (size == 0) { //No items left, disable removing.
+                removeButton.setEnabled(false);
+
+            } else { //Select an index.
+                if (index == listModel.getSize()) {
+                    //removed item in last position
+                    index--;
+                }
+
+                list.setSelectedIndex(index);
+                list.ensureIndexIsVisible(index);
+            }
+        }
+    }
+
+    class QuitListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            System.exit(0);
         }
     }
 
