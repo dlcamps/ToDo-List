@@ -43,48 +43,37 @@ import java.util.Observer;
 import javax.swing.*;
 import javax.swing.event.*;
 
-// TODO: Resetting text field when adding an urgent item
-// TODO: Removing urgent items from listUrgentModel when RemoveListener is called
-// TODO: Fix 'Remove' button being enabled on urgent item selection (maybe disable selection)
-// TODO: Highlight urgent items to replace "[!!!]" tag
-
 public class GUI extends JPanel implements ListSelectionListener {
     private JList list;
-    private JList listUrgent;
     private DefaultListModel listModel;
-    private DefaultListModel listUrgentModel;
-
-    private JComboBox listComboBox;
     private JScrollPane listScrollPane;
-    private JScrollPane listUrgentScrollPane;
     private JButton addButton;
     private JButton removeButton;
     private JRadioButton regularButton;
     private JRadioButton urgentButton;
-    private JTextField itemName;
     private JButton quitButton;
-    private String[] listStrings = { "All", "Urgent" };
+
     private static final String addString = "Add";
     private static final String removeString = "Remove";
-    private static final String regularString = "Regular";
-    private static final String urgentString = "Urgent";
-    private static final String quitString = "Quit";
+    private JTextField itemName;
 
     private ArrayList<String> itemNameImportList;
     private Observer autoSave;
     private ToDoList myList;
     private Boolean startFromScratch;
+    private static final String quitString = "Quit";
+    private static final String regularString = "Regular";
+    private static final String urgentString = "Urgent";
+
     private Integer numberOfColumns = 15;
     private Integer borderSideSize = 30;
     private Integer fontSize = 16;
     private Font myFont = new Font("Lucidia Grande", Font.PLAIN, fontSize);
-    private Font urgentFont = new Font("Lucidie Grande", Font.BOLD, fontSize);
 
     public GUI() throws IOException {
         super(new BorderLayout());
 
         listModel = new DefaultListModel();
-        listUrgentModel = new DefaultListModel();
 
         autoSave = new AutoSave();
         myList = new ToDoList();
@@ -95,9 +84,6 @@ public class GUI extends JPanel implements ListSelectionListener {
             itemNameImportList = myList.convertItemListToStringList(myList);
             for (String s : itemNameImportList) {
                 listModel.addElement(s);
-                if (s.substring(0,5).equals("[!!!]")) {
-                    listUrgentModel.addElement(s.substring(6));
-                }
             }
         } else if (myList.getList().isEmpty()) {
             startFromScratch = true;
@@ -113,18 +99,6 @@ public class GUI extends JPanel implements ListSelectionListener {
         list.setFont(myFont);
         setBorder(BorderFactory.createEmptyBorder(borderSideSize, borderSideSize, borderSideSize, borderSideSize));
 
-        listUrgent = new JList(listUrgentModel);
-        listUrgent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        listUrgent.setSelectedIndex(0);
-        listUrgent.addListSelectionListener(this);
-        listUrgent.setVisibleRowCount(5);
-        listUrgentScrollPane = new JScrollPane(listUrgent);
-        listUrgent.setFont(urgentFont);
-
-        listComboBox = new JComboBox(listStrings);
-        listComboBox.setSelectedIndex(0);
-        listComboBox.addActionListener(new ListListener());
-
         addButton = new JButton(addString);
         AddListener addListener = new AddListener(addButton);
         addButton.setActionCommand(addString);
@@ -133,10 +107,6 @@ public class GUI extends JPanel implements ListSelectionListener {
         removeButton = new JButton(removeString);
         removeButton.setActionCommand(removeString);
         removeButton.addActionListener(new RemoveListener());
-
-        quitButton = new JButton(quitString);
-        quitButton.setActionCommand(quitString);
-        quitButton.addActionListener(new QuitListener());
 
         regularButton = new JRadioButton(regularString);
         regularButton.setSelected(true);
@@ -152,7 +122,15 @@ public class GUI extends JPanel implements ListSelectionListener {
         radioPanel.add(regularButton);
         radioPanel.add(urgentButton);
 
-        // If the list opens empty, the user can't remove items
+        itemName = new JTextField(numberOfColumns);
+        itemName.addActionListener(addListener);
+        itemName.getDocument().addDocumentListener(addListener);
+//        String name = listModel.getElementAt(list.getSelectedIndex()).toString();
+
+        quitButton = new JButton(quitString);
+        quitButton.setActionCommand(quitString);
+        quitButton.addActionListener(new QuitListener());
+
         if (startFromScratch) {
             addButton.setEnabled(true);
             removeButton.setEnabled(false);
@@ -161,11 +139,6 @@ public class GUI extends JPanel implements ListSelectionListener {
             addButton.setEnabled(false);
             removeButton.setEnabled(true);
         }
-
-        itemName = new JTextField(numberOfColumns);
-        itemName.addActionListener(addListener);
-        itemName.getDocument().addDocumentListener(addListener);
-        // String name = listModel.getElementAt(list.getSelectedIndex()).toString();
 
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
@@ -189,36 +162,10 @@ public class GUI extends JPanel implements ListSelectionListener {
         buttonPane.add(quitButton);
         buttonPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
-        add(listComboBox, BorderLayout.PAGE_START);
         add(listScrollPane, BorderLayout.CENTER);
-        add(radioPanel, BorderLayout.LINE_START);
         add(buttonPane, BorderLayout.PAGE_END);
-    }
+        add(radioPanel, BorderLayout.LINE_START);
 
-    public void updateList(String s) {
-        if (s.equals("All")) {
-            removeButton.setEnabled(true);
-            addButton.setEnabled(true);
-            regularButton.setEnabled(true);
-            urgentButton.setEnabled(true);
-            itemName.setEnabled(true);
-            itemName.setBackground(Color.white);
-        } else if (s.equals("Urgent")) {
-            removeButton.setEnabled(false);
-            addButton.setEnabled(false);
-            regularButton.setEnabled(false);
-            urgentButton.setEnabled(false);
-            itemName.setEnabled(false);
-            itemName.setBackground(Color.lightGray);
-        }
-    }
-
-    class ListListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            JComboBox cb = (JComboBox)e.getSource();
-            String listName = (String)cb.getSelectedItem();
-            updateList(listName);
-        }
     }
 
     class QuitListener implements ActionListener {
@@ -229,9 +176,6 @@ public class GUI extends JPanel implements ListSelectionListener {
 
     class RemoveListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            //This method can be called only if
-            //there's a valid selection
-            //so go ahead and remove whatever's selected.
             int index = list.getSelectedIndex();
             listModel.remove(index);
             myList.removeWithIndex(index);
@@ -253,7 +197,6 @@ public class GUI extends JPanel implements ListSelectionListener {
         }
     }
 
-    //This listener is shared by the text field and the add button.
     class AddListener implements ActionListener, DocumentListener {
         private boolean alreadyEnabled = false;
         private JButton button;
@@ -262,14 +205,13 @@ public class GUI extends JPanel implements ListSelectionListener {
             this.button = button;
         }
 
-        public void addToLists(Boolean b, String s, Integer i) {
-            if (b == true) {
-                listModel.insertElementAt(s, i);
-                myList.createItem(1, s);
-            } else if (b == false) {
-                listModel.insertElementAt("[!!!] " + s, i);
-                listUrgentModel.insertElementAt("[!!!] " + s, i);
-                myList.createItem(2, s);
+        public void addToLists(Boolean regular, Integer position, String name) {
+            if (regular == true) {
+                listModel.insertElementAt(name, position);
+                myList.createItem(1, name);
+            } else if (regular == false) {
+                listModel.insertElementAt("[!!!] " + name, position);
+                myList.createItem(2, name);
             }
         }
 
@@ -293,7 +235,7 @@ public class GUI extends JPanel implements ListSelectionListener {
 
             //If we just wanted to add to the end, we'd do this:
             //listModel.addElement(itemName.getText());
-            addToLists(regularButton.isSelected(), itemName.getText(), index);
+            addToLists(regularButton.isSelected(), index, itemName.getText());
 
             //Reset the text field.
             itemName.requestFocusInWindow();
