@@ -66,11 +66,11 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
         if (i == 1) {
             ItemRegular itemRegularToAdd = new ItemRegular();
             itemRegularToAdd.setName(s);
-            list.add(itemRegularToAdd);
+            this.add(itemRegularToAdd);
         } else if (i == 2) {
             ItemUrgent itemUrgentToAdd = new ItemUrgent();
             itemUrgentToAdd.setName(s);
-            list.add(itemUrgentToAdd);
+            this.add(itemUrgentToAdd);
         }
     }
 

@@ -215,11 +215,9 @@ public class GUI extends JPanel implements ListSelectionListener {
             }
         }
 
-        //Required by ActionListener.
         public void actionPerformed(ActionEvent e) {
             String name = itemName.getText();
 
-            //User didn't type in a unique name...
             if (name.equals("") || alreadyInList(name)) {
                 Toolkit.getDefaultToolkit().beep();
                 itemName.requestFocusInWindow();
@@ -233,37 +231,28 @@ public class GUI extends JPanel implements ListSelectionListener {
                 index++;
             }
 
-            //If we just wanted to add to the end, we'd do this:
             //listModel.addElement(itemName.getText());
             addToLists(regularButton.isSelected(), index, itemName.getText());
 
-            //Reset the text field.
             itemName.requestFocusInWindow();
             itemName.setText("");
 
-            //Select the new item and make it visible.
             list.setSelectedIndex(index);
             list.ensureIndexIsVisible(index);
         }
 
-        //This method tests for string equality. You could certainly
-        //get more sophisticated about the algorithm.  For example,
-        //you might want to ignore white space and capitalization.
         protected boolean alreadyInList(String name) {
             return listModel.contains(name);
         }
 
-        //Required by DocumentListener.
         public void insertUpdate(DocumentEvent e) {
             enableButton();
         }
 
-        //Required by DocumentListener.
         public void removeUpdate(DocumentEvent e) {
             handleEmptyTextField(e);
         }
 
-        //Required by DocumentListener.
         public void changedUpdate(DocumentEvent e) {
             if (!handleEmptyTextField(e)) {
                 enableButton();
@@ -286,7 +275,6 @@ public class GUI extends JPanel implements ListSelectionListener {
         }
     }
 
-    //This method is required by ListSelectionListener.
     public void valueChanged(ListSelectionEvent e) {
         if (e.getValueIsAdjusting() == false) {
 
@@ -301,29 +289,19 @@ public class GUI extends JPanel implements ListSelectionListener {
         }
     }
 
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event-dispatching thread.
-     */
     private static void createAndShowGUI() throws IOException {
-        //Create and set up the window.
         JFrame frame = new JFrame("To-Do List");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //Create and set up the content pane.
         JComponent newContentPane = new GUI();
         newContentPane.setOpaque(true); //content panes must be opaque
         frame.setContentPane(newContentPane);
 
-        //Display the window.
         frame.setSize(800, 500);
         frame.setVisible(true);
     }
 
     public static void main(String[] args) throws IOException, RemoveOnEmptyListException {
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 try {
