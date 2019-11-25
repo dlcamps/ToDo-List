@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TestToDoList {
-    private ToDoList myList;
+    private ToDoList myTestList;
     private ItemRegular iR; // Regular Item
     private ItemUrgent iU; // Urgent Item
     private Map<String, Integer> itemLocations;
@@ -19,7 +19,7 @@ public class TestToDoList {
 
     @BeforeEach
     public void setup() {
-        myList = new ToDoList();
+        myTestList = new ToDoList();
         testList = new ArrayList<Item>();
         itemLocations = new HashMap<>();
         testMap = new HashMap<>();
@@ -30,78 +30,86 @@ public class TestToDoList {
         iU.setName("Urgent Item");
     }
     @Test
+    public void testAdd() {
+        assertFalse(myTestList.contains(iR));
+        assertFalse(itemLocations.containsKey(iR.getName()));
+
+        myTestList.add(iR);
+        itemLocations.put(iR.getName(), 1);
+
+        assertTrue(myTestList.contains(iR));
+        assertTrue(itemLocations.containsKey(iR.getName()));
+
+        assertFalse(myTestList.contains(iU));
+        assertFalse(itemLocations.containsKey(iU.removeUrgentTag(iU)));
+
+        myTestList.add(iU);
+        itemLocations.put(iU.removeUrgentTag(iU), 1);
+
+        assertTrue(myTestList.contains(iU));
+        assertTrue(itemLocations.containsKey(iU.removeUrgentTag(iU)));
+    }
+    @Test
+    public void testCreateItem() {
+        assertTrue(myTestList.isEmpty());
+        myTestList.createItem(1, "Test 1 - Regular");
+        assertTrue(myTestList.getItem(0).getName().equals("Test 1 - Regular"));
+        myTestList.createItem(2, "Test 2 - Urgent");
+        assertTrue(myTestList.getItem(1).getName().equals("[!!!] Test 2 - Urgent"));
+    }
+    @Test
+    public void testRemoveWithString() {
+        myTestList.add(iR);
+        myTestList.add(iU);
+        myTestList.removeWithString("1");
+        assertFalse(myTestList.contains(iR));
+        assertTrue(myTestList.contains(iU));
+        myTestList.removeWithString("1");
+        assertFalse(myTestList.contains(iU));
+        myTestList.add(iR);
+        myTestList.add(iU);
+        myTestList.removeWithString("2");
+        assertFalse(myTestList.contains(iU));
+    }
+    @Test
+    public void testRemoveWithItem() {
+        myTestList.add(iR);
+        itemLocations.put(iR.getName(), 1);
+
+        assertTrue(myTestList.contains(iR));
+        assertTrue(itemLocations.containsKey(iR.getName()));
+
+        myTestList.removeWithItem(iR);
+        itemLocations.remove(iR.getName());
+
+        assertFalse(myTestList.contains(iR));
+        assertFalse(itemLocations.containsKey(iR.getName()));
+
+        myTestList.add(iU);
+        itemLocations.put(iU.removeUrgentTag(iU), 2);
+
+        assertTrue(myTestList.contains(iU));
+        assertTrue(itemLocations.containsKey(iU.removeUrgentTag(iU)));
+
+        myTestList.removeWithItem(iU);
+        itemLocations.remove(iU.removeUrgentTag(iU));
+
+        assertFalse(myTestList.contains(iU));
+        assertFalse(itemLocations.containsKey(iU.removeUrgentTag(iU)));
+    }
+    @Test
     public void testGetList() {
-        myList.add(iR);
-        testList = myList.getList();
+        myTestList.add(iR);
+        testList = myTestList.getList();
         assertTrue(testList.contains(iR));
     }
     @Test
     public void testGetMap() {
-        myList.add(iR);
+        myTestList.add(iR);
         itemLocations.put(iR.getName(), 1);
-        assertTrue(myList.contains(iR));
+        assertTrue(myTestList.contains(iR));
         assertTrue(itemLocations.containsKey(iR.getName()));
-        testMap = myList.getMap();
+        testMap = myTestList.getMap();
         assertTrue(testMap.containsKey("Regular Item"));
-    }
-    @Test
-    public void testAdd() {
-        assertFalse(myList.contains(iR));
-        assertFalse(itemLocations.containsKey(iR.getName()));
-
-        myList.add(iR);
-        itemLocations.put(iR.getName(), 1);
-
-        assertTrue(myList.contains(iR));
-        assertTrue(itemLocations.containsKey(iR.getName()));
-
-        assertFalse(myList.contains(iU));
-        assertFalse(itemLocations.containsKey(iU.removeUrgentTag(iU)));
-
-        myList.add(iU);
-        itemLocations.put(iU.removeUrgentTag(iU), 1);
-
-        assertTrue(myList.contains(iU));
-        assertTrue(itemLocations.containsKey(iU.removeUrgentTag(iU)));
-    }
-    @Test
-    public void testRemoveWithString() {
-        myList.add(iR);
-        myList.add(iU);
-        myList.removeWithString("1");
-        assertFalse(myList.contains(iR));
-        assertTrue(myList.contains(iU));
-        myList.removeWithString("1");
-        assertFalse(myList.contains(iU));
-        myList.add(iR);
-        myList.add(iU);
-        myList.removeWithString("2");
-        assertFalse(myList.contains(iU));
-    }
-    @Test
-    public void testRemoveWithItem() {
-        myList.add(iR);
-        itemLocations.put(iR.getName(), 1);
-
-        assertTrue(myList.contains(iR));
-        assertTrue(itemLocations.containsKey(iR.getName()));
-
-        myList.removeWithItem(iR);
-        itemLocations.remove(iR.getName());
-
-        assertFalse(myList.contains(iR));
-        assertFalse(itemLocations.containsKey(iR.getName()));
-
-        myList.add(iU);
-        itemLocations.put(iU.removeUrgentTag(iU), 2);
-
-        assertTrue(myList.contains(iU));
-        assertTrue(itemLocations.containsKey(iU.removeUrgentTag(iU)));
-
-        myList.removeWithItem(iU);
-        itemLocations.remove(iU.removeUrgentTag(iU));
-
-        assertFalse(myList.contains(iU));
-        assertFalse(itemLocations.containsKey(iU.removeUrgentTag(iU)));
     }
 }
