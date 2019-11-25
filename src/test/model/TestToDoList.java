@@ -50,6 +50,14 @@ public class TestToDoList {
         assertTrue(itemLocations.containsKey(iU.removeUrgentTag(iU)));
     }
     @Test
+    public void testConvertItemListToStringList() {
+        myTestList.add(iR);
+        myTestList.add(iU);
+        ArrayList<String> testList = myTestList.convertItemListToStringList(myTestList);
+        assertTrue(testList.get(0).equals("Regular Item"));
+        assertTrue(testList.get(1).equals("[!!!] Urgent Item"));
+    }
+    @Test
     public void testCreateItem() {
         assertTrue(myTestList.isEmpty());
         myTestList.createItem(1, "Test 1 - Regular");
@@ -96,6 +104,14 @@ public class TestToDoList {
 
         assertFalse(myTestList.contains(iU));
         assertFalse(itemLocations.containsKey(iU.removeUrgentTag(iU)));
+    }
+    @Test
+    public void testRemoveWithIndex() {
+        assertFalse(myTestList.contains(iR));
+        myTestList.add(iR);
+        assertTrue(myTestList.contains(iR));
+        myTestList.removeWithIndex(0);
+        assertFalse(myTestList.contains(iR));
     }
     @Test
     public void testGetList() {
