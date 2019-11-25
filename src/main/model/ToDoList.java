@@ -23,6 +23,9 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
     ArrayList<Item> tempList;
     ArrayList<String> passToGUI;
 
+    // REQUIRES: File to read
+    // MODIFIES: This
+    // EFFECTS: Reads all lines in the file, adds regular and urgent items to the list and the map
     public void fileRead(Observer observer) throws IOException {
         lines = Files.readAllLines(Paths.get("data/" + fileNameToRead + ".txt"));
         for (String line : lines) {
@@ -42,6 +45,9 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
         addObserver(observer);
     }
 
+    // REQUIRES: File to write
+    // MODIFIES: This
+    // EFFECTS: Takes all items in the list and writes them to separate lines in the file
     public void fileWrite() throws FileNotFoundException, UnsupportedEncodingException {
         writer = new PrintWriter("data/" + fileNameToWrite + ".txt","UTF-8");
         for (Item i : list) {
@@ -51,6 +57,9 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
         writer.close();
     }
 
+    // REQUIRES: An item
+    // MODIFIES: This
+    // EFFECTS: Adds an item to both the list and the map, auto-saves via the AutoSave observer
     public void add(Item i) {
         list.add(i);
         if (i instanceof ItemRegular) {
@@ -62,6 +71,9 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
         notifyObservers();
     }
 
+    // REQUIRES: Item type and name
+    // MODIFIES: This
+    // EFFECTS: Creates an item of a given type with a given name, adds it to the list
     public void createItem(Integer i, String s) {
         if (i == 1) {
             ItemRegular itemRegularToAdd = new ItemRegular();
@@ -74,6 +86,9 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
         }
     }
 
+    // REQUIRES: String
+    // MODIFIES: This
+    // EFFECTS: Removes an item via its name, auto-saves via the AutoSave observer
     public void removeWithString(String s) {
         itemListPosition = Integer.parseInt(s);
         itemToBeRemoved = list.get(itemListPosition - 1);
@@ -87,12 +102,18 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
         notifyObservers();
     }
 
+    // REQUIRES: Integer
+    // MODIFIES: This
+    // EFFECTS: Removes an item via its index, auto-saves via the AutoSave observer
     public void removeWithIndex(int i) {
         list.remove(i);
         setChanged();
         notifyObservers();
     }
 
+    // REQUIRES: ToDoList
+    // MODIFIES: GUI
+    // EFFECTS: Takes a list of items and converts it to a list of item names
     public ArrayList<String> convertItemListToStringList(ToDoList tdl) {
         if (!(tdl.getList().isEmpty())) {
             tempList = new ArrayList<>();
@@ -105,6 +126,9 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
         return passToGUI;
     }
 
+    // REQUIRES: Integer and string
+    // MODIFIES: This
+    // EFFECTS: Changes the read and write files
     public void setFileName(Integer i, String name) { // 1 = Read, 2 = Write
         if (i == 1) {
             this.fileNameToRead = name;
@@ -126,6 +150,9 @@ public class ToDoList extends Observable implements FileRead, FileWrite {
     }
 
     // For testing
+    // REQUIRES: Item
+    // MODIFIES: This
+    // EFFECTS: Removes an item
     public void removeWithItem(Item i) {
         list.remove(i);
         if (i instanceof ItemUrgent) {

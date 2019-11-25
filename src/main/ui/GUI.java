@@ -189,23 +189,32 @@ public class GUI extends JPanel implements ListSelectionListener {
 
     }
 
+    // REQUIRES: Current scroll pane name
+    // MODIFIES: This
+    // EFFECTS: Switches the active/inactive scroll panes, enables/disables user controls
     public void updateList(String s) {
         if (s.equals("All")) {
             swapAndRefresh(listUrgentScrollPane, listScrollPane);
-            controlsAccessible(true);
+            userControlsAccessible(true);
         } else if (s.equals("Urgent")) {
             swapAndRefresh(listScrollPane, listUrgentScrollPane);
-            controlsAccessible(false);
+            userControlsAccessible(false);
         }
     }
 
+    // REQUIRES: 2 scroll panes
+    // MODIFIES: This
+    // EFFECTS: Switches the active/inactive scroll panes
     public void swapAndRefresh(JScrollPane out, JScrollPane in) {
         this.remove(out);
         this.add(in, BorderLayout.CENTER);
         this.updateUI();
     }
 
-    public void controlsAccessible(Boolean b) {
+    // REQUIRES: Boolean to enable or disable user controls
+    // MODIFIES: This
+    // EFFECTS: Enables/disables all user controls, fades text input box
+    public void userControlsAccessible(Boolean b) {
         removeButton.setEnabled(b);
         addButton.setEnabled(b);
         regularButton.setEnabled(b);
@@ -219,6 +228,9 @@ public class GUI extends JPanel implements ListSelectionListener {
     }
 
     class ListListener implements ActionListener {
+        // REQUIRES: JComboBox
+        // MODIFIES: This
+        // EFFECTS: Calls helper methods to change current scroll pane
         public void actionPerformed(ActionEvent e) {
             JComboBox cb = (JComboBox)e.getSource();
             String listName = (String)cb.getSelectedItem();
@@ -234,6 +246,9 @@ public class GUI extends JPanel implements ListSelectionListener {
             this.button = button;
         }
 
+        // REQUIRES: User input into text box
+        // MODIFIES: This
+        // EFFECTS: Adds text input into listModel or both listModel and listUrgentModel
         public void actionPerformed(ActionEvent e) {
             String name = itemName.getText();
 
@@ -255,10 +270,13 @@ public class GUI extends JPanel implements ListSelectionListener {
             itemName.requestFocusInWindow();
             itemName.setText("");
 
-            list.setSelectedIndex(listModel.getSize()-1);
+            list.setSelectedIndex(listModel.getSize() - 1);
             list.ensureIndexIsVisible(index);
         }
 
+        // REQUIRES: Boolean to decide item's type, string of item's name
+        // MODIFIES: This
+        // EFFECTS: Creates item from text and type, adds into 1 or 2 lists
         public void addToLists(Boolean regular, String name) {
             if (regular == true) {
                 listModel.addElement(name);
@@ -306,15 +324,13 @@ public class GUI extends JPanel implements ListSelectionListener {
 
 
     class RemoveListener implements ActionListener {
+        // REQUIRES: Valid index selected
+        // MODIFIES: This
+        // EFFECTS: Removes the selected item from 1 or 2 lists
         public void actionPerformed(ActionEvent e) {
             int index = list.getSelectedIndex();
             listModel.remove(index);
-            if (index >= 0) {
-                String s = getStringAtIndex(index);
-                if ((s.length() >= 5) && (s.substring(0, 5).equals("[!!!]"))) {
-                    listUrgentModel.removeElement(s.substring(6));
-                }
-            }
+            tryRemoveFromUrgent(index);
             myList.removeWithIndex(index);
             int size = listModel.getSize();
 
@@ -333,6 +349,18 @@ public class GUI extends JPanel implements ListSelectionListener {
         }
     }
 
+    // REQUIRES: Valid index selected
+    // MODIFIES: This
+    // EFFECTS: Removes selected item from the urgent list if it's an urgent item
+    public void tryRemoveFromUrgent(Integer position) {
+        if (position >= 0) {
+            String s = getStringAtIndex(position);
+            if ((s.length() >= 5) && (s.substring(0, 5).equals("[!!!]"))) {
+                listUrgentModel.removeElement(s.substring(6));
+            }
+        }
+    }
+
     public String getStringAtIndex(Integer position) {
         Item i = myList.getItem(position);
         String name = i.getName();
@@ -345,6 +373,9 @@ public class GUI extends JPanel implements ListSelectionListener {
         }
     }
 
+    // REQUIRES: N/A
+    // MODIFIES: This
+    // EFFECTS: Disables button on empty list
     public void valueChanged(ListSelectionEvent e) {
         if (e.getValueIsAdjusting() == false) {
 

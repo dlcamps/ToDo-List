@@ -66,6 +66,9 @@ public class Main {
         }
     }
 
+    // REQUIRES: N/A
+    // MODIFIES: Displays sub-menu to choose item type
+    // EFFECTS: Adds item to the list
     public void option1() {
         System.out.println("Select Item Type: [1] Regular [2] Urgent");
         scanner.nextLine();
@@ -84,6 +87,9 @@ public class Main {
         System.out.println("*** Item Added ***" + newLine);
     }
 
+    // REQUIRES: N/A
+    // MODIFIES: Displays sub-menu to remove an item
+    // EFFECTS: Removes selected item
     public void option2() throws RemoveOnEmptyListException {
         try {
             if (myList.isEmpty()) {
@@ -102,6 +108,9 @@ public class Main {
         }
     }
 
+    // REQUIRES: N/A
+    // MODIFIES: N/A
+    // EFFECTS: Displays all items
     public void option3() {
         itemLine = 1;
         printList = new ArrayList<>();
@@ -115,6 +124,9 @@ public class Main {
         System.out.println(newLine);
     }
 
+    // REQUIRES: N/A
+    // MODIFIES: N/A
+    // EFFECTS: Displays urgent items only
     public void option4() {
         printMap = myList.getMap();
 
