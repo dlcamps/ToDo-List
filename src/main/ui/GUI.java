@@ -44,6 +44,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public class GUI extends JPanel implements ListSelectionListener {
+    public GUI gui;
     private JList list;
     private JList listUrgent;
     private DefaultListModel listModel;
@@ -188,11 +189,35 @@ public class GUI extends JPanel implements ListSelectionListener {
 
     }
 
+    public void updateList(String s) {
+        if (s.equals("All")) {
+            this.remove(listUrgentScrollPane);
+            this.add(listScrollPane);
+            this.updateUI();
+            removeButton.setEnabled(true);
+            addButton.setEnabled(true);
+            regularButton.setEnabled(true);
+            urgentButton.setEnabled(true);
+            itemName.setEnabled(true);
+            itemName.setBackground(Color.white);
+        } else if (s.equals("Urgent")) {
+            this.remove(listScrollPane);
+            this.add(listUrgentScrollPane, BorderLayout.CENTER);
+            this.updateUI();
+            removeButton.setEnabled(false);
+            addButton.setEnabled(false);
+            regularButton.setEnabled(false);
+            urgentButton.setEnabled(false);
+            itemName.setEnabled(false);
+            itemName.setBackground(Color.lightGray);
+        }
+    }
+
     class ListListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             JComboBox cb = (JComboBox)e.getSource();
             String listName = (String)cb.getSelectedItem();
-//            updateList(listName);
+            updateList(listName);
         }
     }
 
