@@ -92,6 +92,9 @@ public class GUI extends JPanel implements ListSelectionListener {
             itemNameImportList = myList.convertItemListToStringList(myList);
             for (String s : itemNameImportList) {
                 listModel.addElement(s);
+                if ((s.length() >= 5) && (s.substring(0, 5).equals("[!!!]"))) {
+                    listUrgentModel.addElement(s.substring(6));
+                }
             }
         } else if (myList.getList().isEmpty()) {
             startFromScratch = true;
@@ -233,16 +236,6 @@ public class GUI extends JPanel implements ListSelectionListener {
             this.button = button;
         }
 
-        public void addToLists(Boolean regular, Integer position, String name) {
-            if (regular == true) {
-                listModel.insertElementAt(name, position);
-                myList.createItem(1, name);
-            } else if (regular == false) {
-                listModel.insertElementAt("[!!!] " + name, position);
-                myList.createItem(2, name);
-            }
-        }
-
         public void actionPerformed(ActionEvent e) {
             String name = itemName.getText();
 
@@ -267,6 +260,17 @@ public class GUI extends JPanel implements ListSelectionListener {
 
             list.setSelectedIndex(index);
             list.ensureIndexIsVisible(index);
+        }
+
+        public void addToLists(Boolean regular, Integer position, String name) {
+            if (regular == true) {
+                listModel.insertElementAt(name, position);
+                myList.createItem(1, name);
+            } else if (regular == false) {
+                listModel.insertElementAt("[!!!] " + name, position);
+                listUrgentModel.insertElementAt(name, position);
+                myList.createItem(2, name);
+            }
         }
 
         protected boolean alreadyInList(String name) {
