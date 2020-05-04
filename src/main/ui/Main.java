@@ -28,7 +28,7 @@ public class Main {
     ArrayList<String> itemNameImportList;
 
     public static void main(String[] args) throws IOException, RemoveOnEmptyListException {
-        ReadWebPage.main(null);
+        //ReadWebPage.main(null);
         new Main();
     }
 
