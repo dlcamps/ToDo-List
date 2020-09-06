@@ -1,4 +1,4 @@
 # project_j9d2b
-![Alt text](https://www.dropbox.com/s/uriy07ro5m199at/Screen%20Shot%202020-05-11%20at%205.33.09%20PM.png?dl=0 "Screenshot 1")
+![Alt text](https://www.dropbox.com/s/8qz72f70khoypaw/Screen%20Shot%202020-09-06%20at%205.01.20%20PM.png?dl=0 "GUI")
 
-![Alt text](https://www.dropbox.com/s/nuuigv6010t4jjv/Screen%20Shot%202020-05-11%20at%205.33.30%20PM.png?dl=0 "Screenshot 2")
+![Alt text](https://www.dropbox.com/s/pgqpm7x81q7mxv8/Screen%20Shot%202020-09-06%20at%205.01.49%20PM.png?dl=0 "Text UI")
